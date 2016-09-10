@@ -1,7 +1,7 @@
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
 
 cs:
-	bin/php-cs-fixer fix --verbose
+	php-cs-fixer fix --verbose
 
 cs-dry-run:
 	bin/php-cs-fixer fix --verbose --dry-run
