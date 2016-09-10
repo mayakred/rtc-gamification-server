@@ -9,3 +9,10 @@
 /composer.phar
 /vendor/
 /web/bundles/
+.idea
+/var/logs/*
+!/var/logs/.gitkeep
+/var/cache/*
+!/var/cache/.gitkeep
+/var/bootstrap.php.cache
+*.iml
