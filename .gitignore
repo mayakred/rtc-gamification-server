@@ -16,3 +16,4 @@
 !/var/cache/.gitkeep
 /var/bootstrap.php.cache
 *.iml
+.php_cs.cache
