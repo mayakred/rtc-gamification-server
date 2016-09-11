@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Hautelook\AliceBundle\HautelookAliceBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new Fresh\DoctrineEnumBundle\FreshDoctrineEnumBundle(),
+            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
 
             new AppBundle\AppBundle(),
         ];
