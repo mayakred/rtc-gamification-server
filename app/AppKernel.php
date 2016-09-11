@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Hautelook\AliceBundle\HautelookAliceBundle(),
             new FOS\RestBundle\FOSRestBundle(),
+            new Fresh\DoctrineEnumBundle\FreshDoctrineEnumBundle(),
 
             new AppBundle\AppBundle(),
         ];
