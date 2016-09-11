@@ -15,5 +15,6 @@
 !/var/cache/.gitkeep
 /var/bootstrap.php.cache
 .php_cs.cache
-.idea/workspace.xml
+.idea
+*.iml
 
