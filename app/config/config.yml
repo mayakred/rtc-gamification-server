@@ -3,6 +3,8 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
 
+    - { resource: "@AppBundle/Resources/config/services.yml" }
+
     - { resource: bundles/jms_serializer.yml }
     - { resource: bundles/hautelook_alice_bundle.yml }
     - { resource: bundles/fos_rest_bundle.yml }
