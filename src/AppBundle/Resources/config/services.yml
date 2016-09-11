@@ -1,0 +1,10 @@
+services:
+    app.timestamp_type_handler:
+        class: AppBundle\Serializer\Handlers\TimestampHandler
+        tags:
+            - { name: jms_serializer.subscribing_handler }
+
+    app.cached_entity_type_handler:
+            class: AppBundle\Serializer\Handlers\CachedEntityHandler
+            tags:
+                - { name: jms_serializer.subscribing_handler }
