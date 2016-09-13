@@ -10,6 +10,10 @@ framework:
 
 liip_functional_test: ~
 
+doctrine:
+    dbal:
+        dbname: '%database_test_name%'
+
 web_profiler:
     toolbar: false
     intercept_redirects: false
