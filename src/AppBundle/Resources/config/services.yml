@@ -5,6 +5,10 @@ services:
             - { name: jms_serializer.subscribing_handler }
 
     app.cached_entity_type_handler:
-            class: AppBundle\Serializer\Handlers\CachedEntityHandler
-            tags:
-                - { name: jms_serializer.subscribing_handler }
+        class: AppBundle\Serializer\Handlers\CachedEntityHandler
+        tags:
+            - { name: jms_serializer.subscribing_handler }
+
+    app.manager.user:
+        class: AppBundle\Manager\UserManager
+        arguments: ['AppBundle\Entity\User', '@doctrine']

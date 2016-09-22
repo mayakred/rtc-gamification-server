@@ -1,0 +1,8 @@
+AppBundle\Entity\User:
+    user:
+        phones: ['@phone']
+
+
+AppBundle\Entity\Phone:
+    phone:
+        phone: '+70000000001'
