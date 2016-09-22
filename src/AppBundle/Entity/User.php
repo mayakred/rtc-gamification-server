@@ -42,6 +42,18 @@ class User extends TimestampableEntity
     protected $phones;
 
     /**
+     * @var AccessToken[]
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="AppBundle\Entity\AccessToken",
+     *     mappedBy="user",
+     *     cascade={"remove", "persist"},
+     *     orphanRemoval=true
+     * )
+     */
+    protected $accessTokens;
+
+    /**
      * @return int
      */
     public function getId()
@@ -107,6 +119,26 @@ class User extends TimestampableEntity
             $phone->setUser(null);
             $this->phones->removeElement($phone);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return AccessToken[]
+     */
+    public function getAccessTokens()
+    {
+        return $this->accessTokens;
+    }
+
+    /**
+     * @param AccessToken[] $accessTokens
+     *
+     * @return $this
+     */
+    public function setAccessTokens($accessTokens)
+    {
+        $this->accessTokens = $accessTokens;
 
         return $this;
     }
