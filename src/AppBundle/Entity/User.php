@@ -10,6 +10,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class User.
@@ -17,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="app__users")
  */
-class User extends TimestampableEntity
+class User extends TimestampableEntity implements UserInterface, EquatableInterface
 {
     /**
      * @var int
@@ -52,6 +54,11 @@ class User extends TimestampableEntity
      * )
      */
     protected $accessTokens;
+
+    /**
+     * @var string
+     */
+    protected $requestToken;
 
     /**
      * @return int
@@ -141,5 +148,56 @@ class User extends TimestampableEntity
         $this->accessTokens = $accessTokens;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequestToken()
+    {
+        return $this->requestToken;
+    }
+
+    /**
+     * @param string $requestToken
+     *
+     * @return $this
+     */
+    public function setRequestToken($requestToken)
+    {
+        $this->requestToken = $requestToken;
+
+        return $this;
+    }
+
+    //UserInterface
+    public function getRoles()
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function getPassword()
+    {
+        return '';
+    }
+
+    public function getSalt()
+    {
+        return '';
+    }
+
+    public function getUsername()
+    {
+        return $this->getId();
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    //EquatableInterface
+    public function isEqualTo(UserInterface $user)
+    {
+        return $user->getUsername() === $this->getUsername();
     }
 }
