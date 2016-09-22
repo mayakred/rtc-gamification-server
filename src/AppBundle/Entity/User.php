@@ -60,6 +60,12 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      */
     protected $requestToken;
 
+    public function __construct()
+    {
+        $this->phones = new ArrayCollection();
+        $this->accessTokens = new ArrayCollection();
+    }
+
     /**
      * @return int
      */
