@@ -40,4 +40,74 @@ class User extends TimestampableEntity
      * @ORM\OrderBy({"id"= "ASC"})
      */
     protected $phones;
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return Phone[]|ArrayCollection
+     */
+    public function getPhones()
+    {
+        return $this->phones;
+    }
+
+    /**
+     * @param Phone[]|ArrayCollection $phones
+     *
+     * @return $this
+     */
+    public function setPhones($phones)
+    {
+        $this->phones = $phones;
+
+        return $this;
+    }
+
+    /**
+     * @param Phone $phone
+     *
+     * @return $this
+     */
+    public function addPhone(Phone $phone)
+    {
+        if (!$this->phones->contains($phone)) {
+            $phone->setUser($this);
+            $this->phones->add($phone);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Phone $phone
+     *
+     * @return $this
+     */
+    public function removePhone(Phone $phone)
+    {
+        if ($this->phones->contains($phone)) {
+            $phone->setUser(null);
+            $this->phones->removeElement($phone);
+        }
+
+        return $this;
+    }
 }
