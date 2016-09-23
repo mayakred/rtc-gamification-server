@@ -1,24 +1,28 @@
-# To get started with security, check out the documentation:
-# http://symfony.com/doc/current/book/security.html
 security:
-
-    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory: ~
+        db:
+            id: app.database_user_provider
+
+    role_hierarchy:
+        ROLE_USER: ~
+        ROLE_ADMIN: [ROLE_USER]
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
+        mobile_api_auth:
+            pattern: ^/api/mobile/v\d+/auth
+            anonymous: ~
+
+        mobile_api_main:
+            pattern: ^/api/mobile
+            stateless: true
+            simple_preauth:
+                authenticator: app.access_token_authenticator
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
         main:
             anonymous: ~
-            # activate different ways to authenticate
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    access_control:
+        - { path: ^/api/mobile/v1/auth, roles: IS_AUTHENTICATED_ANONYMOUSLY }
