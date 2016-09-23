@@ -25,6 +25,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User extends TimestampableEntity implements UserInterface, EquatableInterface
 {
     const FULL_CARD = 'user__full';
+    const SHORT_CARD = 'user__short';
+
     /**
      * @var int
      *
@@ -33,7 +35,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
      * @JMS\Expose()
-     * @JMS\Groups({User::FULL_CARD})
+     * @JMS\Groups({User::FULL_CARD, User::SHORT_CARD})
      */
     protected $id;
 
@@ -89,7 +91,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      * @ORM\Column(name="first_name", type="string", nullable=true)
      *
      * @JMS\Expose()
-     * @JMS\Groups({User::FULL_CARD})
+     * @JMS\Groups({User::FULL_CARD, User::SHORT_CARD})
      */
     protected $firstName;
 
@@ -99,7 +101,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      * @ORM\Column(name="second_name", type="string", nullable=true)
      *
      * @JMS\Expose()
-     * @JMS\Groups({User::FULL_CARD})
+     * @JMS\Groups({User::FULL_CARD, User::SHORT_CARD})
      */
     protected $secondName;
 
@@ -109,7 +111,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      * @ORM\Column(name="middle_name", type="string", nullable=true)
      *
      * @JMS\Expose()
-     * @JMS\Groups({User::FULL_CARD})
+     * @JMS\Groups({User::FULL_CARD, User::SHORT_CARD})
      */
     protected $middleName;
 
@@ -119,7 +121,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      * @ORM\Column(name="gender", type="GenderType")
      *
      * @JMS\Expose()
-     * @JMS\Groups({User::FULL_CARD})
+     * @JMS\Groups({User::FULL_CARD, User::SHORT_CARD})
      */
     protected $gender;
 
@@ -129,7 +131,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      * @ORM\Column(name="rating", type="integer")
      *
      * @JMS\Expose()
-     * @JMS\Groups({User::FULL_CARD})
+     * @JMS\Groups({User::FULL_CARD, User::SHORT_CARD})
      */
     protected $rating;
 
@@ -139,7 +141,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      * @ORM\Column(name="top_position", type="integer")
      *
      * @JMS\Expose()
-     * @JMS\Groups({USER::FULL_CARD})
+     * @JMS\Groups({USER::FULL_CARD, User::SHORT_CARD})
      */
     protected $topPosition;
 
@@ -150,7 +152,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
      *
      * @JMS\Expose()
-     * @JMS\Groups({USER::FULL_CARD})
+     * @JMS\Groups({USER::FULL_CARD, User::SHORT_CARD})
      */
     protected $department;
 
@@ -462,7 +464,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      *
      * @JMS\VirtualProperty()
      * @JMS\SerializedName("avatar")
-     * @JMS\Groups({User::FULL_CARD})
+     * @JMS\Groups({User::FULL_CARD, User::SHORT_CARD})
      */
     public function getAvatar()
     {
@@ -478,7 +480,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      *
      * @JMS\VirtualProperty()
      * @JMS\SerializedName("achievements")
-     * @JMS\Groups({USER::FULL_CARD})
+     * @JMS\Groups({USER::FULL_CARD, User::SHORT_CARD})
      */
     public function getAchievements()
     {

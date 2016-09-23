@@ -76,4 +76,21 @@ class UserControllerTest extends BaseControllerTestCase
         $this->assertEquals($departmentA['code'], $department->getCode());
         $this->assertEquals($departmentA['name'], $department->getName());
     }
+
+    public function testCgetActionSuccess()
+    {
+        $this->loadTestBasedFixture('cget_action_success.yml');
+
+        /**
+         * @var AccessToken $accessToken
+         */
+        $accessToken = $this->fixtures['access_token'];
+
+        $response = $this->request('/api/mobile/v1/users', 'GET', [], [], $accessToken->getToken());
+        $this->assertJsonResponse($response, 200);
+        $data = $this->extractJsonData($response);
+        foreach($data as $user) {
+            //
+        }
+    }
 }

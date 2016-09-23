@@ -62,4 +62,17 @@ class UserManager extends BaseEntityManager
 
         return $user;
     }
+
+    /**
+     * @return User[]
+     */
+    public function findAllOrderByTopPosition()
+    {
+        $qb = $this->getRepository()->createQueryBuilder('u')
+            ->addSelect('department')
+            ->join('u.department', 'department')
+            ->orderBy('u.topPosition', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
 }

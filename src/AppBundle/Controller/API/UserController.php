@@ -36,6 +36,16 @@ class UserController extends BaseAPIController implements ClassResourceInterface
     }
 
     /**
+     * @Get("/users")
+     */
+    public function cgetAction()
+    {
+        $users = $this->get('app.manager.user')->findAllOrderByTopPosition();
+
+        return $this->response(Payload::create($users), [User::SHORT_CARD]);
+    }
+
+    /**
      * @param Request $request
      * @param $slug
      *
