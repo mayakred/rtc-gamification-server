@@ -11,6 +11,8 @@ doctrine:
         mapping_types:
             enum: string
         types:
+            CallType:     AppBundle\DBAL\Types\CallType
+            EventType:    AppBundle\DBAL\Types\EventType
             PlatformType: AppBundle\DBAL\Types\PlatformType
 
     orm:
