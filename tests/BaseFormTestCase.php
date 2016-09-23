@@ -35,10 +35,11 @@ class BaseFormTestCase extends BaseServiceTestCase
 
     /**
      * @param FormInterface $form
+     * @param string $message
      */
-    protected function assertNotValid(FormInterface $form)
+    protected function assertNotValid(FormInterface $form, $message = '')
     {
-        $this->assertFalse($form->isValid());
+        $this->assertFalse($form->isValid(), $message);
     }
 
     /**
