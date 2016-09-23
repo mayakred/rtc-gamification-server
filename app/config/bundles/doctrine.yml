@@ -13,6 +13,7 @@ doctrine:
         types:
             PlatformType: AppBundle\DBAL\Types\PlatformType
             GenderType: AppBundle\DBAL\Types\GenderType
+            DepartmentType: AppBundle\DBAL\Types\DepartmentType
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"

@@ -144,6 +144,14 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     protected $topPosition;
 
     /**
+     * @var Department
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Department")
+     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     */
+    protected $department;
+
+    /**
      * @var string
      */
     protected $requestToken;
@@ -422,6 +430,26 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     public function setTopPosition($topPosition)
     {
         $this->topPosition = $topPosition;
+
+        return $this;
+    }
+
+    /**
+     * @return Department
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return $this
+     */
+    public function setDepartment($department)
+    {
+        $this->department = $department;
 
         return $this;
     }
