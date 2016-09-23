@@ -1,0 +1,9 @@
+AppBundle\Entity\User:
+    user__{1..100}:
+        phones: ['@phone__<current()>']
+        firstName: <firstName()>
+        secondName: <lastName()>
+        gender: <randomElement(['male', 'female'])>
+        rating: <randomNumber()>
+        topPosition: <current()>
+        department: '@department__*'
