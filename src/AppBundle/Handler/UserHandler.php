@@ -8,11 +8,13 @@
  */
 namespace AppBundle\Handler;
 
+use AppBundle\DBAL\Types\GenderType;
 use AppBundle\Entity\Phone;
 use AppBundle\Entity\User;
 use AppBundle\Exceptions\AccessTokenInvalidException;
 use AppBundle\Manager\AccessTokenManager;
 use AppBundle\Manager\UserManager;
+use Faker\Factory;
 
 class UserHandler
 {
@@ -41,6 +43,12 @@ class UserHandler
     public function prepareUserWithPhone($phone)
     {
         $user = new User();
+
+        $faker = Factory::create('ru_RU');
+        $user->setFirstName($faker->firstNameMale);
+        $user->setSecondName($faker->lastName);
+        $user->setGender(GenderType::MALE);
+
         $userPhone = new Phone();
         $userPhone->setPhone($phone);
         $user->addPhone($userPhone);
