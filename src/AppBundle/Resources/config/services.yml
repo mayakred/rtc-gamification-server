@@ -29,6 +29,10 @@ services:
         class: AppBundle\Security\DatabaseUserProvider
         arguments: ['@app.manager.user']
 
+    app.handler.user:
+        class: AppBundle\Handler\UserHandler
+        arguments: ['@app.manager.user']
+
     app.manager.user:
         class: AppBundle\Manager\UserManager
         arguments: ['AppBundle\Entity\User', '@doctrine']
