@@ -9,12 +9,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Class Phone.
  *
  * @ORM\Entity()
  * @ORM\Table(name="app__phones")
+ *
+ * @JMS\ExclusionPolicy("all")
  */
 class Phone extends TemporaryTimestampableEntity
 {
@@ -31,6 +34,9 @@ class Phone extends TemporaryTimestampableEntity
      * @var string
      *
      * @ORM\Column(name="phone", type="string")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({"all"})
      */
     protected $phone;
 
