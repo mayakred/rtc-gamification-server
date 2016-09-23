@@ -20,8 +20,14 @@ class AppKernel extends Kernel
             new FOS\RestBundle\FOSRestBundle(),
             new Fresh\DoctrineEnumBundle\FreshDoctrineEnumBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new Sonata\MediaBundle\SonataMediaBundle(),
+            new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
+            new Sonata\IntlBundle\SonataIntlBundle(),
+            new Sonata\ClassificationBundle\SonataClassificationBundle(),
 
             new AppBundle\AppBundle(),
+            new Application\Sonata\MediaBundle\ApplicationSonataMediaBundle(),
+            new Application\Sonata\ClassificationBundle\ApplicationSonataClassificationBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

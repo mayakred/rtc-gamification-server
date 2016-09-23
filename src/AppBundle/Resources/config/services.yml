@@ -1,4 +1,13 @@
 services:
+    app.generator.date:
+        class: AppBundle\Generator\DateGenerator
+
+    sonata.media.doctrine.event_subscriber:
+        class: AppBundle\Listener\ORM\MediaEventSubscriber
+        arguments: ['@service_container']
+        tags:
+            - { name: doctrine.event_subscriber }
+
     app.timestamp_type_handler:
         class: AppBundle\Serializer\Handlers\TimestampHandler
         tags:
