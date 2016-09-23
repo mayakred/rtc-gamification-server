@@ -57,6 +57,20 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="secret", type="string", nullable=true)
+     */
+    protected $secret;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sms_code", type="string", nullable=true)
+     */
+    protected $smsCode;
+
+    /**
+     * @var string
      */
     protected $requestToken;
 
@@ -152,6 +166,46 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     public function setAccessTokens($accessTokens)
     {
         $this->accessTokens = $accessTokens;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSecret()
+    {
+        return $this->secret;
+    }
+
+    /**
+     * @param string $secret
+     *
+     * @return $this
+     */
+    public function setSecret($secret)
+    {
+        $this->secret = $secret;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSmsCode()
+    {
+        return $this->smsCode;
+    }
+
+    /**
+     * @param string $smsCode
+     *
+     * @return $this
+     */
+    public function setSmsCode($smsCode)
+    {
+        $this->smsCode = $smsCode;
 
         return $this;
     }
