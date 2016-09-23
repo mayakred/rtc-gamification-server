@@ -8,6 +8,7 @@
  */
 namespace AppBundle\Entity;
 
+use AppBundle\DBAL\Types\GenderType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
@@ -175,6 +176,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
         $this->accessTokens = new ArrayCollection();
         $this->rating = 0;
         $this->topPosition = 0;
+        $this->gender = GenderType::MALE;
     }
 
     /**
