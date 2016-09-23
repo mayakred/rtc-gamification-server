@@ -71,6 +71,13 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="sms_code_dt", type="datetime", nullable=true)
+     */
+    protected $smsCodeDt;
+
+    /**
+     * @var string
      */
     protected $requestToken;
 
@@ -206,6 +213,26 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     public function setSmsCode($smsCode)
     {
         $this->smsCode = $smsCode;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSmsCodeDt()
+    {
+        return $this->smsCodeDt;
+    }
+
+    /**
+     * @param string $smsCodeDt
+     *
+     * @return $this
+     */
+    public function setSmsCodeDt($smsCodeDt)
+    {
+        $this->smsCodeDt = $smsCodeDt;
 
         return $this;
     }
