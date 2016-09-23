@@ -1,0 +1,5 @@
+AppBundle\Entity\AccessToken:
+    access_token:
+        user: '@user__1'
+        token: 'token'
+        device: '@device'

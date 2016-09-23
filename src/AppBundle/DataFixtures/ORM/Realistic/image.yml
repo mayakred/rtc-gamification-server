@@ -1,0 +1,12 @@
+AppBundle\Entity\Image:
+    image__image (template):
+        enabled: false
+        providerName: 'sonata.media.provider.image'
+        providerStatus: 1
+        contentType: 'image/jpeg'
+        context: 'default'
+        fixture: true
+
+    image__user_avatar_{1..27} (extends image__image):
+        name: '<current()>.jpg'
+        providerReference: '<current()>.jpg'

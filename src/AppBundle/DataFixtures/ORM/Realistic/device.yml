@@ -1,0 +1,4 @@
+AppBundle\Entity\Device:
+    device:
+        platform: 'android'
+        deviceId: 'some-id'

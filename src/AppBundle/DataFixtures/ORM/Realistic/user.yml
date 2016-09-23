@@ -7,3 +7,4 @@ AppBundle\Entity\User:
         rating: <randomNumber()>
         topPosition: <current()>
         department: '@department__*'
+        avatar: '@image__user_avatar_*'

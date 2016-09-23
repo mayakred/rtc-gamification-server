@@ -157,6 +157,14 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     protected $department;
 
     /**
+     * @var Image
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Image")
+     * @ORM\JoinColumn(name="avatar_id", referencedColumnName="id", nullable=true)
+     */
+    protected $avatar;
+
+    /**
      * @var string
      */
     protected $requestToken;
@@ -486,11 +494,19 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      */
     public function getAvatar()
     {
-        return [
-            'thumbnail' => 'http://www.kleo.ru/img/items/1fb.jpg',
-            'original' => 'http://www.kleo.ru/img/items/1fb.jpg',
-            'standard' => 'http://www.kleo.ru/img/items/1fb.jpg',
-        ];
+        return $this->avatar;
+    }
+
+    /**
+     * @param Image $avatar
+     *
+     * @return $this
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
     }
 
     /**
