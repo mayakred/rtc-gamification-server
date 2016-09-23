@@ -1,0 +1,12 @@
+AppBundle\Entity\Department:
+    department__service:
+        code: 'department_type.service'
+        name: 'Отдел по работе с услугами'
+
+    department__federal:
+        code: 'department_type.federal_clients'
+        name: 'Отдел по работе с госзаказами'
+
+    department__sales:
+        code: 'department_type.active_sales'
+        name: 'Отдел активных продаж'
