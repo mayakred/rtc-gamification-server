@@ -16,7 +16,7 @@ function updateDataByType(data, type) {
    }
 
    if (type === 'meeting') {
-      data.type = $('#result').is(':checked');
+      data.result = $('#result').is(':checked');
    }
 
    if (type === 'sale') {
@@ -44,15 +44,15 @@ function getSaleItemRow() {
       +   '<div class="col-xs-11">'
       +     '<div class="form-group">'
       +       '<label for="service' + itemIdx + '">Service</label>'
-      +       '<input type="text" class="form-control" id="service' + itemIdx + '" class="sale-item-service" placeholder="Some service" required>'
+      +       '<input type="text" class="form-control sale-item-service" id="service' + itemIdx + '" placeholder="Some service" required>'
       +     '</div>'
       +     '<div class="form-group">'
       +       '<label for="amount' + itemIdx + '">Amount</label>'
-      +       '<input type="number" class="form-control" id="amount' + itemIdx + '" class="sale-item-amount" min="1" placeholder="Amount, e.g. 1" required>'
+      +       '<input type="number" class="form-control sale-item-amount" id="amount' + itemIdx + '" min="1" placeholder="Amount, e.g. 1" required>'
       +     '</div>'
       +     '<div class="form-group">'
       +       '<label for="cost' + itemIdx + '">Cost</label>'
-      +       '<input type="number" class="form-control" id="cost' + itemIdx + '" class="sale-item-cost" min="1" placeholder="Cost, e.g. 100" required>'
+      +       '<input type="number" class="form-control sale-item-cost" id="cost' + itemIdx + '" min="1" placeholder="Cost, e.g. 100" required>'
       +     '</div>'
       +   '</div>'
       + '</div>'
