@@ -70,7 +70,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     protected $smsCode;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @ORM\Column(name="sms_code_dt", type="datetime", nullable=true)
      */
@@ -218,7 +218,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     }
 
     /**
-     * @return string
+     * @return \DateTime
      */
     public function getSmsCodeDt()
     {
@@ -226,7 +226,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     }
 
     /**
-     * @param string $smsCodeDt
+     * @param \DateTime $smsCodeDt
      *
      * @return $this
      */
@@ -286,5 +286,48 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     public function isEqualTo(UserInterface $user)
     {
         return $user->getUsername() === $this->getUsername();
+    }
+
+    //Auth
+    /**
+     * @return bool
+     */
+    public function isSmsCodeExpired()
+    {
+        if (!$this->smsCodeDt) {
+            return false;
+        }
+        $dt = new \DateTime(null, $this->smsCodeDt->getTimezone());
+
+        return $dt->getTimestamp()  >= $this->smsCodeDt->getTimestamp() + 5 * 60;
+    }
+
+    /**
+     * @return $this
+     */
+    public function clearAuthInfo()
+    {
+        $this->smsCode = null;
+        $this->smsCodeDt = null;
+
+        return $this;
+    }
+
+    /**
+     * @param $password
+     *
+     * @return bool
+     */
+    public function checkCredentials($password)
+    {
+        return $password == hash('sha256', $this->smsCode . $this->secret);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMobileAppInstalled()
+    {
+        return count($this->accessTokens->toArray()) > 0;
     }
 }
