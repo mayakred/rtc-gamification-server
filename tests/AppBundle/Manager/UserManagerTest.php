@@ -10,6 +10,7 @@ namespace tests\AppBundle\Manager;
 
 
 use AppBundle\Entity\AccessToken;
+use AppBundle\Entity\Phone;
 use AppBundle\Entity\User;
 use AppBundle\Manager\UserManager;
 use Tests\BaseServiceTestCase;
@@ -74,4 +75,49 @@ class UserManagerTest extends BaseServiceTestCase
         $this->assertEquals($user->getId(), $realUser->getId());
     }
 
+    public function testFindOneByActivePhoneNotFound()
+    {
+        $this->loadTestBasedFixture('find_one_by_active_phone_not_found.yml');
+        $user = self::$userManager->findOneByActivePhone('+70000000000');
+        $this->assertNull($user, 'User is not null!');
+    }
+
+    public function testFindOneByActivePhoneFound()
+    {
+        $this->loadTestBasedFixture('find_one_by_active_phone_found.yml');
+        /**
+         * @var Phone $phone
+         * @var User $user
+         */
+        $phone = $this->fixtures['phone'];
+        $user = $this->fixtures['user'];
+        $foundUser = self::$userManager->findOneByActivePhone($phone->getPhone());
+        $this->assertNotNull($foundUser, 'User is null!');
+        $this->assertEquals($user->getId(), $foundUser->getId(), 'Users not the same!');
+    }
+
+    public function testFindOneByActivePhoneInactivePhone()
+    {
+        $this->loadTestBasedFixture('find_one_by_active_phone_inactive_phone.yml');
+        /**
+         * @var Phone $phone
+         */
+        $phone = $this->fixtures['phone'];
+        $user = self::$userManager->findOneByActivePhone($phone->getPhone());
+        $this->assertNull($user, 'User is not null!');
+    }
+
+    public function testFindOneByActivePhoneTwoUsers()
+    {
+        $this->loadTestBasedFixture('find_one_by_active_phone_two_users.yml');
+        /**
+         * @var Phone $phone
+         * @var User $user
+         */
+        $phone = $this->fixtures['phone'];
+        $user = $this->fixtures['user__b'];
+        $foundUser = self::$userManager->findOneByActivePhone($phone->getPhone());
+        $this->assertNotNull($foundUser, 'User is null!');
+        $this->assertEquals($foundUser->getId(), $user->getId(), 'Users not the same!');
+    }
 }

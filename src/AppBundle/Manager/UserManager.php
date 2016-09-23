@@ -40,4 +40,26 @@ class UserManager extends BaseEntityManager
 
         return $user;
     }
+
+    /**
+     * @param $phone
+     *
+     * @return User|null
+     */
+    public function findOneByActivePhone($phone)
+    {
+        $qb = $this->getRepository()->createQueryBuilder('u')
+            ->join('u.phones', 'p')
+            ->where('p.phone = :phone')
+            ->andWhere(TemporaryEntity::getIsActiveCondition('p'))
+            ->setParameter('phone', $phone)
+            ->setParameter('now', new \DateTime(null, new \DateTimeZone('UTC')));
+        try {
+            $user = $qb->getQuery()->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            $user = null;
+        }
+
+        return $user;
+    }
 }

@@ -1,0 +1,9 @@
+AppBundle\Entity\User:
+    user:
+        phones: ['@phone']
+
+AppBundle\Entity\Phone:
+    phone:
+        phone: '+70000000001'
+        since: <dateTimeBetween('-10 days', '-9 days')>
+        until: <dateTimeBetween('-8 days', '-7 days')>

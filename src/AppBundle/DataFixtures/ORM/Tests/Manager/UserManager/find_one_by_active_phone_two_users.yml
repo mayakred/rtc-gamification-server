@@ -1,0 +1,21 @@
+AppBundle\Entity\User:
+    user__a:
+
+    user__b:
+
+AppBundle\Entity\Phone:
+    phone:
+        phone: '+70000000001'
+        since: <dateTimeBetween('-10 days', '-9 days')>
+        until: <dateTimeBetween('-8 days', '-7 days')>
+        user: '@user__a'
+
+    phone__new_a:
+        phone: '+70000000002'
+        since: <dateTimeBetween('-7 days', '-6 days')>
+        user: '@user__a'
+
+    phone__new:
+        phone: '+70000000001'
+        since: <dateTimeBetween('-6 days', '-5 days')>
+        user: '@user__b'
