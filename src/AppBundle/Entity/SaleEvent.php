@@ -17,7 +17,7 @@ class SaleEvent extends Event
      *
      * @ORM\Column(name="total", type="integer", nullable=false)
      */
-    private $total;
+    private $total = 0;
 
     /**
      * @var SaleItem
@@ -69,6 +69,8 @@ class SaleEvent extends Event
      */
     public function addItem(SaleItem $item)
     {
+        $this->total += $item->getTotal();
+
         $item->setSaleEvent($this);
         $this->items[] = $item;
 
@@ -86,5 +88,13 @@ class SaleEvent extends Event
         $this->items->removeElement($item);
 
         return $this;
+    }
+
+    /**
+     * @return SaleItem|ArrayCollection
+     */
+    public function getItems()
+    {
+        return $this->items;
     }
 }

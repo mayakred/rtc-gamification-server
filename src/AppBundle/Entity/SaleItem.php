@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * SaleItem.
@@ -24,6 +25,8 @@ class SaleItem
     /**
      * @var string
      *
+     * @Assert\NotBlank()
+     *
      * @ORM\Column(name="service", type="string", length=255)
      */
     private $service;
@@ -31,16 +34,22 @@ class SaleItem
     /**
      * @var int
      *
+     * @Assert\NotBlank()
+     * @Assert\GreaterThanOrEqual(value="1")
+     *
      * @ORM\Column(name="amount", type="integer")
      */
-    private $amount;
+    private $amount = 1;
 
     /**
      * @var int
      *
+     * @Assert\NotBlank()
+     * @Assert\GreaterThanOrEqual(value="1")
+     *
      * @ORM\Column(name="cost", type="integer")
      */
-    private $cost;
+    private $cost = 1;
 
     /**
      * @var SaleEvent
@@ -130,6 +139,14 @@ class SaleItem
     public function getCost()
     {
         return $this->cost;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotal()
+    {
+        return $this->amount * $this->cost;
     }
 
     /**

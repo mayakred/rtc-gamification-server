@@ -1,0 +1,4 @@
+event:
+    type:        rest
+    resource:    AppBundle\Controller\API\EventController
+    name_prefix: api_event_

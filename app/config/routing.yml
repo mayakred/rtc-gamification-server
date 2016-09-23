@@ -1,3 +1,8 @@
+external:
+    resource: routing_external.yml
+    prefix:   /api/v1
+    defaults: { _format: json }
+
 mobile:
     resource: routing_mobile.yml
     prefix:   /api/mobile/v1

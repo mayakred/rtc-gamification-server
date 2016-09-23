@@ -44,6 +44,10 @@ services:
         class: AppBundle\Handler\UserHandler
         arguments: ['@app.manager.user']
 
+    app.handler.event:
+        class: AppBundle\Handler\EventHandler
+        arguments: ['@app.manager.event']
+
     app.manager.user:
         class: AppBundle\Manager\UserManager
         arguments: ['AppBundle\Entity\User', '@doctrine']
@@ -59,3 +63,7 @@ services:
     app.manager.phone:
         class: AppBundle\Manager\PhoneManager
         arguments: ['AppBundle\Entity\Phone', '@doctrine']
+
+    app.manager.event:
+        class: AppBundle\Manager\EventManager
+        arguments: ['AppBundle\Entity\Event', '@doctrine']

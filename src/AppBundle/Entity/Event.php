@@ -2,7 +2,8 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Model\Phone;
+use AppBundle\Model\Partial\PhonePartial;
+use AppBundle\Model\Partial\PhonePartialInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,8 +20,10 @@ use Doctrine\ORM\Mapping as ORM;
  * })
  * @ORM\HasLifecycleCallbacks()
  */
-abstract class Event extends TimestampableEntity
+abstract class Event extends TimestampableEntity implements PhonePartialInterface
 {
+    use PhonePartial;
+
     /**
      * @var int
      *
@@ -37,11 +40,6 @@ abstract class Event extends TimestampableEntity
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     protected $user;
-
-    /**
-     * @var Phone
-     */
-    protected $phone;
 
     /**
      * Get id.
@@ -75,25 +73,6 @@ abstract class Event extends TimestampableEntity
     public function getUser()
     {
         return $this->user;
-    }
-
-    /**
-     * @param Phone|null $phone
-     * @return Event
-     */
-    public function setPhone(Phone $phone = null)
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    /**
-     * @return Phone|null
-     */
-    public function getPhone()
-    {
-        return $this->phone;
     }
 
     /**

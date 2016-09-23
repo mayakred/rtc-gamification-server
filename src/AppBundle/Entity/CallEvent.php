@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use AppBundle\DBAL\Types\EventType;
 use Doctrine\ORM\Mapping as ORM;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="events__calls")
@@ -14,6 +15,9 @@ class CallEvent extends Event
 {
     /**
      * @var string
+     *
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      *
      * @ORM\Column(name="call_type", type="CallType")
      * @DoctrineAssert\Enum(entity="AppBundle\DBAL\Types\CallType")
