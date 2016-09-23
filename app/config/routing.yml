@@ -12,3 +12,11 @@ mobile:
     resource: routing_mobile.yml
     prefix:   /api/mobile/v1
     defaults: { _format: json }
+
+gallery:
+    resource: '@SonataMediaBundle/Resources/config/routing/gallery.xml'
+    prefix: /media/gallery
+
+media:
+    resource: '@SonataMediaBundle/Resources/config/routing/media.xml'
+    prefix: /media
