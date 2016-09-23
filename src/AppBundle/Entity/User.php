@@ -148,6 +148,9 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Department")
      * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({USER::FULL_CARD})
      */
     protected $department;
 
