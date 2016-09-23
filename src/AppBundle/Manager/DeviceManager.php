@@ -8,6 +8,6 @@
  */
 namespace AppBundle\Manager;
 
-class DeviceManager
+class DeviceManager extends BaseEntityManager
 {
 }
