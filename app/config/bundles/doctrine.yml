@@ -15,6 +15,7 @@ doctrine:
             EventType:    AppBundle\DBAL\Types\EventType
             PlatformType: AppBundle\DBAL\Types\PlatformType
             GenderType: AppBundle\DBAL\Types\GenderType
+            TournamentType: AppBundle\DBAL\Types\TournamentType
             DepartmentType: AppBundle\DBAL\Types\DepartmentType
 
     orm:
