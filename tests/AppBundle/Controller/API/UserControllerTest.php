@@ -47,4 +47,22 @@ class UserControllerTest extends BaseControllerTestCase
         $this->assertNotNull($data['id'], 'data->id is null!');
         $this->assertEquals($data['id'], $user->getId());
     }
+
+    public function testPostPlayerId()
+    {
+        $this->loadTestBasedFixture('post_player_id_success.yml');
+        /**
+         * @var AccessToken $accessToken
+         */
+        $accessToken = $this->fixtures['access_token'];
+
+        $response = $this->request(
+            '/api/mobile/v1/users/me/players',
+            'POST',
+            [],
+            ['player_id' => 'playerId'],
+            $accessToken->getToken()
+        );
+        $this->assertAccessTokenNotInvalid($response);
+    }
 }

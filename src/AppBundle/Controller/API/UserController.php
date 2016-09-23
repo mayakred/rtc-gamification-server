@@ -39,7 +39,7 @@ class UserController extends BaseAPIController implements ClassResourceInterface
         /**
          * @var string $playerId
          */
-        $playerId = $this->handleJSONForm($request, $this->createForm(TextType::class));
+        $playerId = $this->handleJSONForm($request, $this->createForm(TextType::class))['player_id'];
         $this->get('app.handler.user')->addPlayerId($playerId, $this->getUser());
 
         return $this->response(Payload::create());
