@@ -9,6 +9,8 @@
 namespace tests\AppBundle\Controller\API;
 
 
+use AppBundle\Entity\Phone;
+use AppBundle\Entity\User;
 use Tests\BaseControllerTestCase;
 
 class AuthControllerTest extends BaseControllerTestCase
@@ -40,5 +42,30 @@ class AuthControllerTest extends BaseControllerTestCase
         $data = $this->extractJsonData($response);
         $this->assertArrayHasKey('secret', $data);
         $this->assertNotNull($data['secret']);
+    }
+
+    public function testAuthConfirmSuccess()
+    {
+        $this->loadTestBasedFixture('auth_confirm_success.yml');
+        /**
+         * @var User $user
+         * @var Phone $phone
+         */
+        $user = $this->fixtures['user'];
+        $phone = $this->fixtures['phone'];
+        $password = hash('sha256', $user->getSmsCode() . $user->getSecret());
+
+        $response = $this->postJSONForm('/api/mobile/v1/auth/confirm', [
+            'phone' => $phone->getPhone  (),
+            'password' => $password,
+            'device_id' => 'device_id',
+            'platform' => 'ios',
+        ]);
+        $this->assertJsonResponse($response, 200);
+        $data = $this->extractJsonData($response);
+        $this->assertArrayHasKey('access_token', $data);
+//        $response = $this->request('/api/mobile/v1/users/me', 'GET', [], [], $data['access_token']);
+//        $this->assertJsonResponse($response, 200);
+//        $data = $this->extractJsonData($response);
     }
 }
