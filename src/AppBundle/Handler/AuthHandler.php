@@ -84,7 +84,7 @@ class AuthHandler
     }
 
     /**
-     * @param $phone
+     * @param string $phone
      *
      * @return string
      */
