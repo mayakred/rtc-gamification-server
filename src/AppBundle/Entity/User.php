@@ -322,12 +322,4 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     {
         return $password == hash('sha256', $this->smsCode . $this->secret);
     }
-
-    /**
-     * @return bool
-     */
-    public function isMobileAppInstalled()
-    {
-        return count($this->accessTokens->toArray()) > 0;
-    }
 }
