@@ -382,6 +382,24 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     /**
      * @return string
      */
+    public function getFullName()
+    {
+        $result = $this->firstName;
+
+        if ($this->middleName) {
+            $result .= ' ' . $this->middleName;
+        }
+
+        if ($this->secondName) {
+            $result .= ' ' . $this->secondName;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return string
+     */
     public function getGender()
     {
         return $this->gender;

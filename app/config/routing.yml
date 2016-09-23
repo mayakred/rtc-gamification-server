@@ -1,3 +1,8 @@
+app_main:
+    type:       annotation
+    prefix:     /
+    resource:   "@AppBundle/Controller/MainController.php"
+
 external:
     resource: routing_external.yml
     prefix:   /api/v1

@@ -1,0 +1,97 @@
+{% extends '::base.html.twig' %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('bundles/app/js/events.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-3">
+      <!-- Form block -->
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Add event</h3>
+        </div>
+        <form role="form" id="add-event-form">
+          <div class="box-body">
+            <div class="form-group">
+              <label for="users">Users</label>
+              <select class="form-control" id="users">
+                {% for user in users %}
+                  <option value="{{ user.activePhone }}">[{{ user.id }}] {{ user.fullname }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="type">Type</label>
+              <select class="form-control" id="type">
+                <option value="call">Call</option>
+                <option value="sale">Sale</option>
+                <option value="meeting">Meeting</option>
+              </select>
+            </div>
+            <div class="form-group call">
+              <label for="call-type">Type</label>
+              <select class="form-control" id="call-type">
+                <option value="cold">Cold</option>
+                <option value="hot">Hot</option>
+              </select>
+            </div>
+            <div class="form-group checkbox meeting" style="display: none;">
+              <label>
+                <input type="checkbox" id="result"> Success result
+              </label>
+            </div>
+            <div class="form-group call" style="display: none;">
+              <label for="call-type">Type</label>
+              <select class="form-control" id="call-type">
+                <option value="cold">Cold</option>
+                <option value="hot">Hot</option>
+              </select>
+            </div>
+            <div class="form-group sale" style="display: none;">
+              {#<div class="row">
+                <div class="col-xs-1">
+                  <a href="#" class="btn btn-link sonata-collection-delete"><i class="glyphicon glyphicon-minus" style="width: 100%;" aria-hidden="true"></i></a>
+                </div>
+                <div class="col-xs-11">
+                  <div class="form-group">
+                    <label for="">Service</label>
+                    <input type="text" class="form-control" id="" placeholder="Some service" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="">Amount</label>
+                    <input type="number" class="form-control" id="" min="1" placeholder="Amount, e.g. 1" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="">Cost</label>
+                    <input type="number" class="form-control" id="" min="1" placeholder="Cost, e.g. 100" required>
+                  </div>
+                </div>
+              </div>#}
+              <div><a href="#" class="btn btn-link sale-item-add"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i></a></div>
+            </div>
+          </div>
+          <!-- /.box-body -->
+
+          <div class="box-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Log</h3>
+        </div>
+        <div class="box-body">
+          <pre id="log">
+          </pre>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

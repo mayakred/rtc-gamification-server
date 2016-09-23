@@ -40,7 +40,7 @@ class EventController extends BaseAPIController implements ClassResourceInterfac
         /** @var Event $event */
         $event = $this->handleJSONForm($request, $this->createForm(static::$forms[$type]));
 
-        if (($user = $this->get('app.manager.user')->findOneByActivePhone($event->getPhone())) !== null) {
+        if (($user = $this->get('app.manager.user')->findOneByActivePhone($event->getPhone())) === null) {
             throw $this->createNotFoundException();
         }
 
