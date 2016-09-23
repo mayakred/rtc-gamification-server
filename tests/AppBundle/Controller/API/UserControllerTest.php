@@ -10,6 +10,7 @@ namespace tests\AppBundle\Controller\API;
 
 
 use AppBundle\Entity\AccessToken;
+use AppBundle\Entity\Department;
 use AppBundle\Entity\User;
 use Tests\BaseControllerTestCase;
 
@@ -29,25 +30,6 @@ class UserControllerTest extends BaseControllerTestCase
         $this->assertAccessTokenInvalid($response, 'Access token not invalid!');
     }
 
-    public function testGetActionSuccess()
-    {
-        $this->loadTestBasedFixture('get_action_success.yml');
-        /**
-         * @var AccessToken $accessToken
-         * @var User $user
-         */
-        $accessToken = $this->fixtures['access_token'];
-        $user = $this->fixtures['user'];
-
-        $response = $this->request('/api/mobile/v1/user', 'GET', [], [], $accessToken->getToken());
-        $this->assertAccessTokenNotInvalid($response, 'Access token is invalid!');
-        $data = $this->extractJsonData($response);
-        $this->assertNotNull($data['access_token'], 'data->access_token is null!');
-        $this->assertEquals($data['access_token'], $accessToken->getToken());
-        $this->assertNotNull($data['id'], 'data->id is null!');
-        $this->assertEquals($data['id'], $user->getId());
-    }
-
     public function testPostPlayerId()
     {
         $this->loadTestBasedFixture('post_player_id_success.yml');
@@ -64,5 +46,34 @@ class UserControllerTest extends BaseControllerTestCase
             $accessToken->getToken()
         );
         $this->assertAccessTokenNotInvalid($response);
+    }
+
+    public function testGetActionSuccess()
+    {
+        $this->loadTestBasedFixture('get_action_success.yml');
+        /**
+         * @var User $user
+         * @var AccessToken $accessToken
+         * @var Department $department
+         */
+        $user = $this->fixtures['user'];
+        $department = $this->fixtures['department__service'];
+        $accessToken = $this->fixtures['access_token'];
+        $response = $this->request('/api/mobile/v1/users/me', 'GET', [], [], $accessToken->getToken());
+        $this->assertJsonResponse($response, 200);
+        $data = $this->extractJsonData($response);
+        $this->assertNotNull($data);
+        $this->assertEquals($data['id'], $user->getId());
+        $this->assertEquals($data['first_name'], $user->getFirstName());
+        $this->assertEquals($data['second_name'], $user->getSecondName());
+        $this->assertEquals($data['middle_name'], $user->getMiddleName());
+        $this->assertEquals($data['gender'], $user->getGender());
+        $this->assertEquals($data['phone'], $user->getActivePhone());
+        $this->assertEquals($data['rating'], $user->getRating());
+        $this->assertEquals($data['top_position'], $user->getTopPosition());
+        $departmentA = $data['department'];
+        $this->assertEquals($departmentA['id'], $department->getId());
+        $this->assertEquals($departmentA['code'], $department->getCode());
+        $this->assertEquals($departmentA['name'], $department->getName());
     }
 }
