@@ -1,0 +1,18 @@
+AppBundle\Entity\User:
+    user:
+
+AppBundle\Entity\Phone:
+    phone:
+        phone: '+70000000000'
+        user: '@user'
+
+AppBundle\Entity\Device:
+    device:
+        platform: 'ios'
+        deviceId: 'some-unique-device-id'
+
+AppBundle\Entity\AccessToken:
+    access_token:
+        token: 'token'
+        user: '@user'
+        device: '@device'

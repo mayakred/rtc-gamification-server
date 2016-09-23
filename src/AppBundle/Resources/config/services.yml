@@ -9,6 +9,26 @@ services:
         tags:
             - { name: jms_serializer.subscribing_handler }
 
+    app.exception.listener:
+        class: AppBundle\EventListener\ExceptionListener
+        arguments: ['@logger']
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+    app.request.listener:
+        class: AppBundle\EventListener\RequestListener
+        arguments: ['@logger']
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
+
+    app.access_token_authenticator:
+        class: AppBundle\Security\TokenAuthenticator
+        public: false
+
+    app.database_user_provider:
+        class: AppBundle\Security\DatabaseUserProvider
+        arguments: ['@app.manager.user']
+
     app.manager.user:
         class: AppBundle\Manager\UserManager
         arguments: ['AppBundle\Entity\User', '@doctrine']

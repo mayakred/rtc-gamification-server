@@ -1,12 +1,1 @@
 services:
-    app.exception.listener:
-        class: AppBundle\EventListener\ExceptionListener
-        arguments: ['@logger']
-        tags:
-            - { name: kernel.event_listener, event: kernel.exception }
-
-    app.request.listener:
-        class: AppBundle\EventListener\RequestListener
-        arguments: ['@logger']
-        tags:
-            - { name: kernel.event_listener, event: kernel.request }

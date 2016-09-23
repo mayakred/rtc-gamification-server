@@ -1,0 +1,9 @@
+auth:
+    type:        rest
+    resource:    AppBundle\Controller\API\AuthController
+    name_prefix: api_mobile_
+
+user:
+    type:        rest
+    resource:    AppBundle\Controller\API\UserController
+    name_prefix: api_mobile_
