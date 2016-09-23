@@ -21,11 +21,11 @@ parameters:
 
     base_url:          http://127.0.0.1:8000
 
-	onesignal.app_id:  app_id
-	onesignal.api_key: api_key
+    onesignal.app_id:  app_id
+    onesignal.api_key: api_key
 
-	smsru.api_key: ~
+    smsru.api_key: ~
 
-	main.disable_sms_notifications: false
-	main.disable_password_generation: false
+    main.disable_sms_notifications: false
+    main.disable_password_generation: false
 
