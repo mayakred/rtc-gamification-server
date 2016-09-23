@@ -18,3 +18,14 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    base_url:          http://127.0.0.1:8000
+
+	onesignal.app_id:  app_id
+	onesignal.api_key: api_key
+
+	smsru.api_key: ~
+
+	main.disable_sms_notifications: false
+	main.disable_password_generation: false
+
