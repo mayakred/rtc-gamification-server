@@ -22,7 +22,7 @@ security:
             security: false
 
         event_api:
-            pattern: ^/api/events
+            pattern: ^/api/v1/events
             anonymous: ~
 
         main:
