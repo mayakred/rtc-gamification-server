@@ -3,8 +3,8 @@
 /**
  * Created by IntelliJ IDEA.
  * User: Ivan Kalita
- * Date: 13.09.16
- * Time: 16:26.
+ * Date: 23.09.16
+ * Time: 19:27.
  */
 namespace AppBundle\Entity;
 
@@ -12,14 +12,14 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * Class Phone.
+ * Class Department.
  *
+ * @ORM\Table(name="app__departments")
  * @ORM\Entity()
- * @ORM\Table(name="app__phones")
  *
  * @JMS\ExclusionPolicy("all")
  */
-class Phone extends TemporaryTimestampableEntity
+class Department
 {
     /**
      * @var int
@@ -27,26 +27,31 @@ class Phone extends TemporaryTimestampableEntity
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups("all")
      */
     protected $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="phone", type="string")
+     * @ORM\Column(name="code", type="DepartmentType", unique=true)
      *
      * @JMS\Expose()
      * @JMS\Groups({"all"})
      */
-    protected $phone;
+    protected $code;
 
     /**
-     * @var User
+     * @var string
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="phones", cascade={"persist"})
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\Column(name="name", type="string")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({"all"})
      */
-    protected $user;
+    protected $name;
 
     /**
      * @return int
@@ -71,39 +76,19 @@ class Phone extends TemporaryTimestampableEntity
     /**
      * @return string
      */
-    public function getPhone()
+    public function getCode()
     {
-        return $this->phone;
+        return $this->code;
     }
 
     /**
-     * @param string $phone
+     * @param string $code
      *
      * @return $this
      */
-    public function setPhone($phone)
+    public function setCode($code)
     {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    /**
-     * @return User
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param User $user
-     *
-     * @return $this
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
+        $this->code = $code;
 
         return $this;
     }
@@ -111,8 +96,20 @@ class Phone extends TemporaryTimestampableEntity
     /**
      * @return string
      */
-    public function __toString()
+    public function getName()
     {
-        return $this->phone;
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
     }
 }

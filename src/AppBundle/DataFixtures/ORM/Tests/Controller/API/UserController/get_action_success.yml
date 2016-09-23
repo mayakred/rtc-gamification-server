@@ -1,15 +1,35 @@
 AppBundle\Entity\User:
     user:
+        department: '@department__service'
+        firstName: 'Алиса'
+        middleName: 'Петровна'
+        secondName: 'Петро'
+        gender: 'female'
+        rating: 100
+        topPosition: 20
+        phones: ['@phone']
 
 AppBundle\Entity\Phone:
     phone:
         phone: '+70000000000'
-        user: '@user'
 
 AppBundle\Entity\Device:
     device:
         platform: 'ios'
         deviceId: 'some-unique-device-id'
+
+AppBundle\Entity\Department:
+    department__service:
+        code: 'department_type.service'
+        name: 'Отдел по работе с услугами'
+
+    department__federal:
+        code: 'department_type.federal_clients'
+        name: 'Отдел по работе с госзаказами'
+
+    department__sales:
+        code: 'department_type.active_sales'
+        name: 'Отдел активных продаж'
 
 AppBundle\Entity\AccessToken:
     access_token:

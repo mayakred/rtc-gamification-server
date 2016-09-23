@@ -42,7 +42,7 @@ services:
 
     app.handler.user:
         class: AppBundle\Handler\UserHandler
-        arguments: ['@app.manager.user']
+        arguments: ['@app.manager.user', '@app.manager.access_token']
 
     app.handler.event:
         class: AppBundle\Handler\EventHandler
@@ -55,6 +55,10 @@ services:
     app.manager.access_token:
         class: AppBundle\Manager\AccessTokenManager
         arguments: ['AppBundle\Entity\AccessToken', '@doctrine']
+
+    app.manager.department:
+        class: AppBundle\Manager\DepartmentManager
+        arguments: ['AppBundle\Entity\Department', '@doctrine']
 
     app.manager.device:
         class: AppBundle\Manager\DeviceManager

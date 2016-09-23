@@ -10,6 +10,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -18,15 +19,23 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @ORM\Entity()
  * @ORM\Table(name="app__users")
+ *
+ * @JMS\ExclusionPolicy("all")
  */
 class User extends TimestampableEntity implements UserInterface, EquatableInterface
 {
+    const FULL_CARD = 'user__full';
+    const SHORT_CARD = 'user__short';
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({User::FULL_CARD, User::SHORT_CARD})
      */
     protected $id;
 
@@ -78,6 +87,77 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="first_name", type="string", nullable=true)
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({User::FULL_CARD, User::SHORT_CARD})
+     */
+    protected $firstName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="second_name", type="string", nullable=true)
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({User::FULL_CARD, User::SHORT_CARD})
+     */
+    protected $secondName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="middle_name", type="string", nullable=true)
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({User::FULL_CARD, User::SHORT_CARD})
+     */
+    protected $middleName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="gender", type="GenderType")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({User::FULL_CARD, User::SHORT_CARD})
+     */
+    protected $gender;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="rating", type="integer")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({User::FULL_CARD, User::SHORT_CARD})
+     */
+    protected $rating;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="top_position", type="integer")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({USER::FULL_CARD, User::SHORT_CARD})
+     */
+    protected $topPosition;
+
+    /**
+     * @var Department
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Department")
+     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({USER::FULL_CARD, User::SHORT_CARD})
+     */
+    protected $department;
+
+    /**
+     * @var string
      */
     protected $requestToken;
 
@@ -85,6 +165,8 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     {
         $this->phones = new ArrayCollection();
         $this->accessTokens = new ArrayCollection();
+        $this->rating = 0;
+        $this->topPosition = 0;
     }
 
     /**
@@ -240,6 +322,174 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     /**
      * @return string
      */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param string $firstName
+     *
+     * @return $this
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSecondName()
+    {
+        return $this->secondName;
+    }
+
+    /**
+     * @param string $secondName
+     *
+     * @return $this
+     */
+    public function setSecondName($secondName)
+    {
+        $this->secondName = $secondName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMiddleName()
+    {
+        return $this->middleName;
+    }
+
+    /**
+     * @param string $middleName
+     *
+     * @return $this
+     */
+    public function setMiddleName($middleName)
+    {
+        $this->middleName = $middleName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    /**
+     * @param string $gender
+     *
+     * @return $this
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @param int $rating
+     *
+     * @return $this
+     */
+    public function setRating($rating)
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTopPosition()
+    {
+        return $this->topPosition;
+    }
+
+    /**
+     * @param int $topPosition
+     *
+     * @return $this
+     */
+    public function setTopPosition($topPosition)
+    {
+        $this->topPosition = $topPosition;
+
+        return $this;
+    }
+
+    /**
+     * @return Department
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return $this
+     */
+    public function setDepartment($department)
+    {
+        $this->department = $department;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     *
+     * @JMS\VirtualProperty()
+     * @JMS\SerializedName("avatar")
+     * @JMS\Groups({User::FULL_CARD, User::SHORT_CARD})
+     */
+    public function getAvatar()
+    {
+        return [
+            'thumbnail' => 'http://www.kleo.ru/img/items/1fb.jpg',
+            'original' => 'http://www.kleo.ru/img/items/1fb.jpg',
+            'standard' => 'http://www.kleo.ru/img/items/1fb.jpg',
+        ];
+    }
+
+    /**
+     * @return array
+     *
+     * @JMS\VirtualProperty()
+     * @JMS\SerializedName("achievements")
+     * @JMS\Groups({USER::FULL_CARD, User::SHORT_CARD})
+     */
+    public function getAchievements()
+    {
+        return [];
+    }
+
+    /**
+     * @return string
+     */
     public function getRequestToken()
     {
         return $this->requestToken;
@@ -321,5 +571,30 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     public function checkCredentials($password)
     {
         return $password == hash('sha256', $this->smsCode . $this->secret);
+    }
+
+    //Other
+    /**
+     * @return Phone
+     *
+     * @JMS\VirtualProperty()
+     * @JMS\Groups({User::FULL_CARD})
+     * @JMS\SerializedName("phone")
+     * @JMS\Inline()
+     */
+    public function getActivePhone()
+    {
+        $activePhone = null;
+        foreach ($this->phones as $phone) {
+            /**
+             * @var Phone $phone
+             */
+            if ($phone->isActual()) {
+                $activePhone = $phone;
+                break;
+            }
+        }
+
+        return $activePhone;
     }
 }
