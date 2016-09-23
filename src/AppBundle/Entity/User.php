@@ -21,6 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User extends TimestampableEntity implements UserInterface, EquatableInterface
 {
+    const FULL_CARD = 'user__full';
     /**
      * @var int
      *
@@ -78,6 +79,41 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="first_name", type="string", nullable=true)
+     */
+    protected $firstName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="second_name", type="string", nullable=true)
+     */
+    protected $secondName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="middle_name", type="string", nullable=true)
+     */
+    protected $middleName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="gender", type="GenderType")
+     */
+    protected $gender;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="rating", type="integer")
+     */
+    protected $rating;
+
+    /**
+     * @var string
      */
     protected $requestToken;
 
@@ -85,6 +121,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     {
         $this->phones = new ArrayCollection();
         $this->accessTokens = new ArrayCollection();
+        $this->rating = 0;
     }
 
     /**
@@ -233,6 +270,106 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     public function setSmsCodeDt($smsCodeDt)
     {
         $this->smsCodeDt = $smsCodeDt;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param string $firstName
+     *
+     * @return $this
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSecondName()
+    {
+        return $this->secondName;
+    }
+
+    /**
+     * @param string $secondName
+     *
+     * @return $this
+     */
+    public function setSecondName($secondName)
+    {
+        $this->secondName = $secondName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMiddleName()
+    {
+        return $this->middleName;
+    }
+
+    /**
+     * @param string $middleName
+     *
+     * @return $this
+     */
+    public function setMiddleName($middleName)
+    {
+        $this->middleName = $middleName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    /**
+     * @param string $gender
+     *
+     * @return $this
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @param int $rating
+     *
+     * @return $this
+     */
+    public function setRating($rating)
+    {
+        $this->rating = $rating;
 
         return $this;
     }
