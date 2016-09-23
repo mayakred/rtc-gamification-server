@@ -52,6 +52,10 @@ services:
         class: AppBundle\Manager\AccessTokenManager
         arguments: ['AppBundle\Entity\AccessToken', '@doctrine']
 
+    app.manager.department:
+        class: AppBundle\Manager\DepartmentManager
+        arguments: ['AppBundle\Entity\Department', '@doctrine']
+
     app.manager.device:
         class: AppBundle\Manager\DeviceManager
         arguments: ['AppBundle\Entity\Device', '@doctrine']
