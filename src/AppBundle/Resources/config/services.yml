@@ -29,6 +29,17 @@ services:
         class: AppBundle\Security\DatabaseUserProvider
         arguments: ['@app.manager.user']
 
+    app.handler.auth:
+        class: AppBundle\Handler\AuthHandler
+        arguments:
+            - '@app.manager.user'
+            - '@app.manager.device'
+            - '@app.manager.access_token'
+            - '@app.manager.phone'
+            - '@app.handler.user'
+            - '@event_dispatcher'
+            - '%main.disable_password_generation%'
+
     app.handler.user:
         class: AppBundle\Handler\UserHandler
         arguments: ['@app.manager.user']
