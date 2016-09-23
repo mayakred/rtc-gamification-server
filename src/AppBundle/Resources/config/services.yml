@@ -36,3 +36,15 @@ services:
     app.manager.user:
         class: AppBundle\Manager\UserManager
         arguments: ['AppBundle\Entity\User', '@doctrine']
+
+    app.manager.access_token:
+        class: AppBundle\Manager\AccessTokenManager
+        arguments: ['AppBundle\Entity\AccessToken', '@doctrine']
+
+    app.manager.device:
+        class: AppBundle\Manager\DeviceManager
+        arguments: ['AppBundle\Entity\Device', '@doctrine']
+
+    app.manager.phone:
+        class: AppBundle\Manager\PhoneManager
+        arguments: ['AppBundle\Entity\Phone', '@doctrine']
