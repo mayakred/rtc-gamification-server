@@ -12,6 +12,7 @@ doctrine:
             enum: string
         types:
             PlatformType: AppBundle\DBAL\Types\PlatformType
+            GenderType: AppBundle\DBAL\Types\GenderType
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
