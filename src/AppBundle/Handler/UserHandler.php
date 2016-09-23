@@ -10,6 +10,8 @@ namespace AppBundle\Handler;
 
 use AppBundle\Entity\Phone;
 use AppBundle\Entity\User;
+use AppBundle\Exceptions\AccessTokenInvalidException;
+use AppBundle\Manager\AccessTokenManager;
 use AppBundle\Manager\UserManager;
 
 class UserHandler
@@ -20,13 +22,20 @@ class UserHandler
     protected $userManager;
 
     /**
+     * @var AccessTokenManager
+     */
+    protected $accessTokenManager;
+
+    /**
      * UserHandler constructor.
      *
-     * @param UserManager $userManager
+     * @param UserManager        $userManager
+     * @param AccessTokenManager $accessTokenManager
      */
-    public function __construct(UserManager $userManager)
+    public function __construct(UserManager $userManager, AccessTokenManager $accessTokenManager)
     {
         $this->userManager = $userManager;
+        $this->accessTokenManager = $accessTokenManager;
     }
 
     public function prepareUserWithPhone($phone)
@@ -53,5 +62,22 @@ class UserHandler
         }
 
         return $user;
+    }
+
+    /**
+     * @param string $playerId
+     * @param User   $user
+     *
+     * @throws AccessTokenInvalidException
+     */
+    public function addPlayerId($playerId, User $user)
+    {
+        $currentUserAccessToken = $this->accessTokenManager->findOneActiveByUserAndToken($user, $user->getRequestToken());
+        if ($currentUserAccessToken === null) {
+            throw new AccessTokenInvalidException();
+        }
+        $this->accessTokenManager->deactivateActiveTokensWithPlayerId($playerId);
+        $currentUserAccessToken->setPlayerId($playerId);
+        $this->accessTokenManager->save($currentUserAccessToken);
     }
 }

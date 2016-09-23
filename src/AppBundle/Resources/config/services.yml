@@ -42,7 +42,7 @@ services:
 
     app.handler.user:
         class: AppBundle\Handler\UserHandler
-        arguments: ['@app.manager.user']
+        arguments: ['@app.manager.user', '@app.manager.access_token']
 
     app.manager.user:
         class: AppBundle\Manager\UserManager
