@@ -1,0 +1,10 @@
+AppBundle\Entity\Phone:
+    phone:
+        phone: '+70000000000'
+
+AppBundle\Entity\User:
+    user:
+        phones: ['@phone']
+        smsCode: 12345
+        smsCodeDt: <dateTimeBetween('now', 'now')>
+        secret: secret

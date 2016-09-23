@@ -9,7 +9,12 @@
 namespace AppBundle\Handler;
 
 use AppBundle\Entity\AccessToken;
+use AppBundle\Entity\Device;
 use AppBundle\Event\UserAuthorizationEvent;
+use AppBundle\Exceptions\CredentialsInvalidException;
+use AppBundle\Exceptions\NotFoundException;
+use AppBundle\Exceptions\RequestExpiredException;
+use AppBundle\Exceptions\RequestRequiredException;
 use AppBundle\Manager\AccessTokenManager;
 use AppBundle\Manager\DeviceManager;
 use AppBundle\Manager\PhoneManager;
@@ -102,5 +107,57 @@ class AuthHandler
         $this->dispatcher->dispatch(UserAuthorizationEvent::NAME, $event);
 
         return $user->getSecret();
+    }
+
+    /**
+     * @param $phone
+     * @param $password
+     * @param $platform
+     * @param $deviceId
+     *
+     * @throws CredentialsInvalidException
+     * @throws NotFoundException
+     * @throws RequestExpiredException
+     * @throws RequestRequiredException
+     *
+     * @return AccessToken
+     */
+    public function confirm($phone, $password, $platform, $deviceId)
+    {
+        $user = $this->userManager->findOneByActivePhone($phone);
+
+        if (!$user) {
+            throw new NotFoundException();
+        }
+        if (!$user->getSmsCode()) {
+            throw new RequestRequiredException();
+        }
+        if ($user->isSmsCodeExpired()) {
+            $user->clearAuthInfo();
+            $this->userManager->save($user);
+            throw new RequestExpiredException();
+        }
+        if (!$user->checkCredentials($password)) {
+            throw new CredentialsInvalidException();
+        }
+
+        $device = $this->deviceManager->findOneBy(['platform' => $platform, 'deviceId' => $deviceId]);
+        if (!$device) {
+            $device = new Device();
+            $device
+                ->setPlatform($platform)
+                ->setDeviceId($deviceId);
+            $this->deviceManager->save($device);
+        }
+        $token = new AccessToken();
+        $token
+            ->setUser($user)
+            ->setDevice($device)
+            ->generateToken();
+        $user->clearAuthInfo();
+        $this->userManager->save($user);
+        $this->tokenManager->save($token);
+
+        return $token;
     }
 }

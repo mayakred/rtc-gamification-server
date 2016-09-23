@@ -9,8 +9,13 @@
 namespace tests\AppBundle\Handler;
 
 
+use AppBundle\DBAL\Types\PlatformType;
 use AppBundle\Entity\Phone;
 use AppBundle\Entity\User;
+use AppBundle\Exceptions\CredentialsInvalidException;
+use AppBundle\Exceptions\NotFoundException;
+use AppBundle\Exceptions\RequestExpiredException;
+use AppBundle\Exceptions\RequestRequiredException;
 use AppBundle\Handler\AuthHandler;
 use Tests\BaseServiceTestCase;
 
@@ -49,6 +54,7 @@ class AuthHandlerTest extends BaseServiceTestCase
 
     public function testRequestNewUser()
     {
+        $this->loadTestBasedFixture();
         $phone = '+70000000000';
         $secret = static::$authHandler->request($phone);
         $this->assertNotNull($secret, 'Secret is null');
@@ -63,5 +69,74 @@ class AuthHandlerTest extends BaseServiceTestCase
         $this->assertNotNull($user->getSmsCodeDt(), 'Sms code datetime is null!');
         $this->assertNotNull($user->getSecret(), 'Secret is null!');
         $this->assertEquals($user->getSecret(), $secret, 'Secrets are not the same');
+    }
+
+    public function testConfirmNoUser()
+    {
+        $this->loadTestBasedFixture();
+        try {
+            static::$authHandler->confirm('+70000000000', 'pass', PlatformType::IOS, 'device_id');
+            $this->fail('No exception was thrown');
+        } catch (NotFoundException $e) {
+        }
+    }
+
+    public function testConfirmRequestRequired()
+    {
+        $this->loadTestBasedFixture('confirm_request_required.yml');
+        /**
+         * @var Phone $phone
+         */
+        $phone = $this->fixtures['phone'];
+        try {
+            static::$authHandler->confirm($phone->getPhone(), 'pass', PlatformType::IOS, 'device_id');
+            $this->fail('No exception was thrown');
+        } catch (RequestRequiredException $e) {
+        }
+    }
+
+    public function testConfirmRequestExpired()
+    {
+        $this->loadTestBasedFixture('confirm_request_expired.yml');
+        /**
+         * @var Phone $phone
+         */
+        $phone = $this->fixtures['phone'];
+        try {
+            static::$authHandler->confirm($phone->getPhone(), 'pass', PlatformType::IOS, 'device_id');
+            $this->fail('No exception was thrown');
+        } catch (RequestExpiredException $e) {
+        }
+    }
+
+    public function testConfirmInvalidCredentials()
+    {
+        $this->loadTestBasedFixture('confirm_invalid_credentials.yml');
+        /**
+         * @var Phone $phone
+         * @var User $user
+         */
+        $phone = $this->fixtures['phone'];
+        $user = $this->fixtures['user'];
+        $password = hash('sha256', $user->getSmsCode() . $user->getSecret()) . 'error';
+        try {
+            static::$authHandler->confirm($phone->getPhone(), $password, PlatformType::IOS, 'device_id');
+            $this->fail('No exception was thrown');
+        } catch (CredentialsInvalidException $e) {
+        }
+    }
+
+    public function testConfirmSuccess()
+    {
+        $this->loadTestBasedFixture('confirm_success.yml');
+        /**
+         * @var Phone $phone
+         * @var User $user
+         */
+        $phone = $this->fixtures['phone'];
+        $user = $this->fixtures['user'];
+        $password = hash('sha256', $user->getSmsCode() . $user->getSecret());
+        $result = static::$authHandler->confirm($phone->getPhone(), $password, PlatformType::IOS, 'device_id');
+        $this->assertNotNull($result);
     }
 }
