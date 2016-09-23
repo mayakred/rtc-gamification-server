@@ -458,6 +458,34 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     }
 
     /**
+     * @return array
+     *
+     * @JMS\VirtualProperty()
+     * @JMS\SerializedName("avatar")
+     * @JMS\Groups({User::FULL_CARD})
+     */
+    public function getAvatar()
+    {
+        return [
+            'thumbnail' => 'http://www.kleo.ru/img/items/1fb.jpg',
+            'original' => 'http://www.kleo.ru/img/items/1fb.jpg',
+            'standard' => 'http://www.kleo.ru/img/items/1fb.jpg',
+        ];
+    }
+
+    /**
+     * @return array
+     *
+     * @JMS\VirtualProperty()
+     * @JMS\SerializedName("achievements")
+     * @JMS\Groups({USER::FULL_CARD})
+     */
+    public function getAchievements()
+    {
+        return [];
+    }
+
+    /**
      * @return string
      */
     public function getRequestToken()
