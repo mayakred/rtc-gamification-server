@@ -42,7 +42,7 @@ class UserManager extends BaseEntityManager
     }
 
     /**
-     * @param $phone
+     * @param string $phone
      *
      * @return User|null
      */

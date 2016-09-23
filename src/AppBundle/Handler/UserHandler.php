@@ -40,7 +40,7 @@ class UserHandler
     }
 
     /**
-     * @param $phone
+     * @param string $phone
      *
      * @return \AppBundle\Entity\User
      */
