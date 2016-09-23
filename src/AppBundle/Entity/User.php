@@ -10,6 +10,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -18,6 +19,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @ORM\Entity()
  * @ORM\Table(name="app__users")
+ *
+ * @JMS\ExclusionPolicy("all")
  */
 class User extends TimestampableEntity implements UserInterface, EquatableInterface
 {
@@ -28,6 +31,9 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({User::FULL_CARD})
      */
     protected $id;
 
@@ -81,6 +87,9 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      * @var string
      *
      * @ORM\Column(name="first_name", type="string", nullable=true)
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({User::FULL_CARD})
      */
     protected $firstName;
 
@@ -88,6 +97,9 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      * @var string
      *
      * @ORM\Column(name="second_name", type="string", nullable=true)
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({User::FULL_CARD})
      */
     protected $secondName;
 
@@ -95,6 +107,9 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      * @var string
      *
      * @ORM\Column(name="middle_name", type="string", nullable=true)
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({User::FULL_CARD})
      */
     protected $middleName;
 
@@ -102,6 +117,9 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      * @var string
      *
      * @ORM\Column(name="gender", type="GenderType")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({User::FULL_CARD})
      */
     protected $gender;
 
@@ -109,8 +127,21 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      * @var int
      *
      * @ORM\Column(name="rating", type="integer")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({User::FULL_CARD})
      */
     protected $rating;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="top_position", type="integer")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({USER::FULL_CARD})
+     */
+    protected $topPosition;
 
     /**
      * @var string
@@ -122,6 +153,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
         $this->phones = new ArrayCollection();
         $this->accessTokens = new ArrayCollection();
         $this->rating = 0;
+        $this->topPosition = 0;
     }
 
     /**
@@ -375,6 +407,26 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     }
 
     /**
+     * @return int
+     */
+    public function getTopPosition()
+    {
+        return $this->topPosition;
+    }
+
+    /**
+     * @param int $topPosition
+     *
+     * @return $this
+     */
+    public function setTopPosition($topPosition)
+    {
+        $this->topPosition = $topPosition;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getRequestToken()
@@ -458,5 +510,30 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     public function checkCredentials($password)
     {
         return $password == hash('sha256', $this->smsCode . $this->secret);
+    }
+
+    //Other
+    /**
+     * @return Phone
+     *
+     * @JMS\VirtualProperty()
+     * @JMS\Groups({User::FULL_CARD})
+     * @JMS\SerializedName("phone")
+     * @JMS\Inline()
+     */
+    public function getActivePhone()
+    {
+        $activePhone = null;
+        foreach ($this->phones as $phone) {
+            /**
+             * @var Phone $phone
+             */
+            if ($phone->isActual()) {
+                $activePhone = $phone;
+                break;
+            }
+        }
+
+        return $activePhone;
     }
 }
