@@ -1,5 +1,5 @@
 AppBundle\Entity\User:
-    user__{1..100}:
+    user__{2..100}:
         phones: ['@phone__<current()>']
         firstName: <firstName()>
         secondName: <lastName()>
@@ -8,3 +8,73 @@ AppBundle\Entity\User:
         topPosition: <current()>
         department: '@department__*'
         avatar: '@image__user_avatar_*'
+        userAchievements: ['@user_achievement_<current()>_admiral', '@user_achievement_<current()>_service', '@user_achievement_<current()>_meeting', '@user_achievement_<current()>_idea', '@user_achievement_<current()>_chemp']
+
+    user__1:
+        phones: ['@phone__1']
+        firstName: <firstName()>
+        secondName: <lastName()>
+        gender: <randomElement(['male', 'female'])>
+        rating: <randomNumber()>
+        topPosition: 1
+        department: '@department__*'
+        avatar: '@image__user_avatar_*'
+        userAchievements: ['@user_achievement_admiral', '@user_achievement_service', '@user_achievement_meeting', '@user_achievement_idea', '@user_achievement_chemp']
+
+AppBundle\Entity\Achievement:
+    achievement (template):
+        maxValue: <numberBetween(200, 1500)>
+
+    achievement_admiral (extends achievement):
+        name: 'Адмирал продаж'
+        image: "@image__achievement_admiral"
+
+    achievement_service (extends achievement):
+        name: 'Служу России'
+        image: "@image__achievement_service"
+
+    achievement_meeting (extends achievement):
+        name: 'Главный экстраверт'
+        image: "@image__achievement_meeting"
+
+    achievement_idea (extends achievement):
+        name: 'Генератор пиздатых идей aka ГэПэИ'
+        image: "@image__achievement_idea"
+
+    achievement_chemp (extends achievement): # champion
+        name: 'Чужой среди своих'
+        image: "@image__achievement_chemp"
+
+AppBundle\Entity\UserAchievement:
+    user_achievement (template):
+        value: <numberBetween(50, 1500)>
+
+    user_achievement_admiral (extends user_achievement):
+        achievement: "@achievement_admiral"
+
+    user_achievement_service (extends user_achievement):
+        achievement: "@achievement_service"
+
+    user_achievement_meeting (extends user_achievement):
+        achievement: "@achievement_meeting"
+
+    user_achievement_idea (extends user_achievement):
+        achievement: "@achievement_idea"
+
+    user_achievement_chemp (extends user_achievement): # champion
+        achievement: "@achievement_chemp"
+
+    user_achievement_{2..100}_admiral (extends user_achievement):
+        achievement: '@achievement_admiral'
+
+    user_achievement_{2..100}_service (extends user_achievement):
+        achievement: '@achievement_service'
+
+    user_achievement_{2..100}_meeting (extends user_achievement):
+        achievement: '@achievement_meeting'
+
+    user_achievement_{2..100}_idea (extends user_achievement):
+        achievement: '@achievement_idea'
+
+    user_achievement_{2..100}_chemp (extends user_achievement):
+        achievement: '@achievement_admiral'
