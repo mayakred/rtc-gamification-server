@@ -38,9 +38,9 @@ services:
 
     app.push.listener:
         class: AppBundle\EventListener\PushEventListener
-        arguments: ['%onesignal.api_key%', '%onesignal.app_id%']
+        arguments: ['%onesignal.api_key%', '%onesignal.app_id%', '@app.manager.user']
         tags:
-            - { name: kernel.event_listener, event: 'app.event.push' }
+            - { name: kernel.event_listener, event: 'app.event.push', method: 'processPush' }
 
     app.access_token_authenticator:
         class: AppBundle\Security\TokenAuthenticator

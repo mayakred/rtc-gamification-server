@@ -11,6 +11,7 @@ namespace AppBundle\EventListener;
 use AppBundle\DBAL\Types\GenderType;
 use AppBundle\DBAL\Types\PushType;
 use AppBundle\Event\PushEvent;
+use AppBundle\Manager\UserManager;
 
 class PushEventListener
 {
@@ -25,21 +26,29 @@ class PushEventListener
     protected $appId;
 
     /**
+     * @var UserManager
+     */
+    protected $userManager;
+
+    /**
      * PushEventListener constructor.
      *
-     * @param string $restAPIKey
-     * @param string $appId
+     * @param string      $restAPIKey
+     * @param string      $appId
+     * @param UserManager $userManager
      */
-    public function __construct($restAPIKey, $appId)
+    public function __construct($restAPIKey, $appId, $userManager)
     {
         $this->restAPIKey = $restAPIKey;
         $this->appId = $appId;
+        $this->userManager = $userManager;
     }
 
     public function processPush(PushEvent $event)
     {
         $playerIds = [];
-        foreach ($event->getUser()->getAccessTokens() as $accessToken) {
+        $user = $this->userManager->findJoinedWithAccessTokens($event->getUser()->getId());
+        foreach ($user->getAccessTokens() as $accessToken) {
             $playerId = $accessToken->getPlayerId();
             if ($playerId !== null && !in_array($playerId, $playerIds)) {
                 $playerIds[] = $playerId;
@@ -49,9 +58,6 @@ class PushEventListener
             return;
         }
 
-        $content = '';
-        $title = '';
-        $user = $event->getUser();
         $data = [
             'type' => $event->getType(),
             'duel_id' => $event->getDuel()->getId(),

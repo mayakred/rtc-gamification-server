@@ -11,9 +11,11 @@ namespace AppBundle\Controller\API;
 use AppBundle\Classes\Payload;
 use AppBundle\Controller\BaseAPIController;
 use AppBundle\DBAL\Types\DuelStatusType;
+use AppBundle\DBAL\Types\PushType;
 use AppBundle\Entity\Duel;
 use AppBundle\Entity\Metric;
 use AppBundle\Entity\User;
+use AppBundle\Event\PushEvent;
 use AppBundle\Exceptions\ActionNotAllowedException;
 use AppBundle\Exceptions\FormInvalidException;
 use AppBundle\Exceptions\NotFoundException;
@@ -109,7 +111,17 @@ class UserController extends BaseAPIController implements ClassResourceInterface
         $duel->setStatus(DuelStatusType::IN_PROGRESS);
         $duel->setSince(new \DateTime(null, new \DateTimeZone('UTC')));
         $this->get('app.manager.duel')->save($duel);
-        //TODO: Send PUSH
+
+        $this->get('event_dispatcher')->dispatch(
+            PushEvent::NAME,
+            new PushEvent(
+                '',
+                '',
+                $duel->getInitiator(),
+                PushType::DUEL_STARTED,
+                $duel
+            )
+        );
 
         return $this->response(Payload::create());
     }
@@ -143,7 +155,17 @@ class UserController extends BaseAPIController implements ClassResourceInterface
         $duel->setSince(new \DateTime(null, new \DateTimeZone('UTC')));
         $duel->setUntil($duel->getSince());
         $this->get('app.manager.duel')->save($duel);
-        //TODO: Send PUSH
+
+        $this->get('event_dispatcher')->dispatch(
+            PushEvent::NAME,
+            new PushEvent(
+                '',
+                '',
+                $duel->getInitiator(),
+                PushType::DUEL_REJECTED,
+                $duel
+            )
+        );
 
         return $this->response(Payload::create());
     }
@@ -189,7 +211,17 @@ class UserController extends BaseAPIController implements ClassResourceInterface
             ->setInitiator($this->getUser())
             ->setStatus(DuelStatusType::WAITING_VICTIM);
         $this->get('app.manager.duel')->save($duel);
-        //TODO: Send push
+
+        $this->get('event_dispatcher')->dispatch(
+            PushEvent::NAME,
+            new PushEvent(
+                '',
+                '',
+                $duel->getVictim(),
+                PushType::DUEL_STARTED,
+                $duel
+            )
+        );
 
         return $this->response(Payload::create($duel), [User::SHORT_CARD, Duel::FULL_CARD]);
     }

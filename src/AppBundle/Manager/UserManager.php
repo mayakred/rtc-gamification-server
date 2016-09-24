@@ -75,4 +75,26 @@ class UserManager extends BaseEntityManager
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * @param $id
+     *
+     * @return User|null
+     */
+    public function findJoinedWithAccessTokens($id)
+    {
+        $qb = $this->getRepository()->createQueryBuilder('u')
+            ->addSelect('at')
+            ->leftJoin('u.accessTokens', 'at')
+            ->where('u.id = :id')
+            ->setParameter('id', $id);
+
+        try {
+            $user = $qb->getQuery()->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            $user = null;
+        }
+
+        return $user;
+    }
 }

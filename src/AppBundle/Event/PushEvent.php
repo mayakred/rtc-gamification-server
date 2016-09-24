@@ -49,7 +49,7 @@ class PushEvent extends Event
      * @param $user
      * @param $type
      */
-    public function __construct($title, $content, $user, $type, $duel)
+    public function __construct($title = '', $content = '', $user, $type, $duel)
     {
         $this->title = $title;
         $this->content = $content;
