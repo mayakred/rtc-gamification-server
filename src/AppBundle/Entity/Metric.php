@@ -9,12 +9,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Class Metric.
  *
  * @ORM\Entity()
  * @ORM\Table(name="app__metrics")
+ *
+ * @JMS\ExclusionPolicy("all")
  */
 class Metric
 {
@@ -31,6 +34,9 @@ class Metric
      * @var string
      *
      * @ORM\Column(name="code", type="string", unique=true)
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({"all"})
      */
     protected $code;
 
@@ -38,6 +44,9 @@ class Metric
      * @var string
      *
      * @ORM\Column(name="unit_type", type="UnitType")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({"all"})
      */
     protected $unitType;
 
@@ -45,6 +54,9 @@ class Metric
      * @var string
      *
      * @ORM\Column(name="name", type="string")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({"all"})
      */
     protected $name;
 
@@ -52,6 +64,9 @@ class Metric
      * @var bool
      *
      * @ORM\Column(name="available_for_individual_tournaments", type="boolean")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({"all"})
      */
     protected $availableForIndividualTournaments;
 
@@ -59,8 +74,21 @@ class Metric
      * @var bool
      *
      * @ORM\Column(name="available_for_team_tournaments", type="boolean")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({"all"})
      */
     protected $availableForTeamTournaments;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="available_for_duel", type="boolean")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({"all"})
+     */
+    protected $availableForDuel;
 
     /**
      * Metric constructor.
@@ -69,6 +97,7 @@ class Metric
     {
         $this->availableForIndividualTournaments = false;
         $this->availableForTeamTournaments = true;
+        $this->availableForDuel = true;
     }
 
     /**
@@ -187,6 +216,26 @@ class Metric
     public function setAvailableForTeamTournaments($availableForTeamTournaments)
     {
         $this->availableForTeamTournaments = $availableForTeamTournaments;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAvailableForDuel()
+    {
+        return $this->availableForDuel;
+    }
+
+    /**
+     * @param bool $availableForDuel
+     *
+     * @return $this
+     */
+    public function setAvailableForDuel($availableForDuel)
+    {
+        $this->availableForDuel = $availableForDuel;
 
         return $this;
     }

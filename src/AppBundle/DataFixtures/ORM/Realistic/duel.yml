@@ -1,0 +1,128 @@
+AppBundle\Entity\Duel:
+    duel__victim_victim_win_{1..3}:
+        until: <dateTimeBetween('-5 days', 'now')>
+        createdAt: <dateTimeBetween('-10 days', '-6 days')>
+        since: "@duel__victim_victim_win_<current()>->createdAt"
+        victim: "@user__1"
+        initiator: "@user__<numberBetween(2, 100)>"
+        metric: "@metric__*"
+        victimValue: <numberBetween(1, 100)>
+        initiatorValue: <numberBetween(0, $victimValue)>
+        status: "duel_status_type.victim_win"
+
+    duel__victim_initiator_win_{1..3}:
+        until: <dateTimeBetween('-5 days', 'now')>
+        createdAt: <dateTimeBetween('-10 days', '-6 days')>
+        since: "@duel__victim_initiator_win_<current()>->createdAt"
+        victim: "@user__1"
+        initiator: "@user__<numberBetween(2, 100)>"
+        metric: "@metric__*"
+        victimValue: <numberBetween(0, 99)>
+        initiatorValue: <numberBetween($victimValue, 100)>
+        status: "duel_status_type.initiator_win"
+
+    duel__initiator_victim_win_{1..3}:
+        until: <dateTimeBetween('-5 days', 'now')>
+        createdAt: <dateTimeBetween('-10 days', '-6 days')>
+        since: "@duel__initiator_victim_win_<current()>->createdAt"
+        initiator: "@user__1"
+        victim: "@user__<numberBetween(2, 100)>"
+        metric: "@metric__*"
+        victimValue: <numberBetween(1, 100)>
+        initiatorValue: <numberBetween(0, $victimValue)>
+        status: "duel_status_type.victim_win"
+
+    duel__initiator_initiator_win_{1..3}:
+        until: <dateTimeBetween('-5 days', 'now')>
+        createdAt: <dateTimeBetween('-10 days', '-6 days')>
+        since: "@duel__initiator_initiator_win_<current()>->createdAt"
+        initiator: "@user__1"
+        victim: "@user__<numberBetween(2, 100)>"
+        metric: "@metric__*"
+        victimValue: <numberBetween(0, 99)>
+        initiatorValue: <numberBetween($victimValue, 100)>
+        status: "duel_status_type.initiator_win"
+
+    duel__initiator_in_progress_{1..3}:
+        createdAt: <dateTimeBetween('-10 days', '-6 days')>
+        since: "@duel__initiator_in_progress_<current()>->createdAt"
+        initiator: "@user__1"
+        victim: "@user__<numberBetween(2, 100)>"
+        metric: "@metric__*"
+        victimValue: <numberBetween(1, 100)>
+        initiatorValue: <numberBetween(0, $victimValue)>
+        status: "duel_status_type.in_progress"
+
+    duel__victim_in_progress_{1..3}:
+        createdAt: <dateTimeBetween('-10 days', '-6 days')>
+        since: "@duel__victim_in_progress_<current()>->createdAt"
+        victim: "@user__1"
+        initiator: "@user__<numberBetween(2, 100)>"
+        metric: "@<randomElement(['metric__sales_in_rubles', 'metric__sales_in_units'])>"
+        victimValue: <numberBetween(1000, 1000000)>
+        initiatorValue: <numberBetween(0, $victimValue)>
+        status: "duel_status_type.in_progress"
+
+    duel__victim_wait_victim_{1..3}:
+        createdAt: <dateTimeBetween('-10 days', '-6 days')>
+        since: "@duel__victim_wait_victim_<current()>->createdAt"
+        victim: "@user__1"
+        initiator: "@user__<numberBetween(2, 100)>"
+        metric: "@<randomElement(['metric__sales_in_rubles', 'metric__sales_in_units'])>"
+        victimValue: 0
+        initiatorValue: 0
+        status: "duel_status_type.waiting_victim"
+
+    duel__initiator_wait_victim_{1..3}:
+        createdAt: <dateTimeBetween('-10 days', '-6 days')>
+        since: "@duel__initiator_wait_victim_<current()>->createdAt"
+        initiator: "@user__1"
+        victim: "@user__<numberBetween(2, 100)>"
+        metric: "@metric__*"
+        victimValue: 0
+        initiatorValue: 0
+        status: "duel_status_type.waiting_victim"
+
+    duel__victim_draw_{1..2}:
+        until: <dateTimeBetween('-5 days', 'now')>
+        createdAt: <dateTimeBetween('-10 days', '-6 days')>
+        since: "@duel__victim_draw_<current()>->createdAt"
+        victim: "@user__1"
+        initiator: "@user__<numberBetween(2, 100)>"
+        metric: "@metric__*"
+        victimValue: <numberBetween(1, 100)>
+        initiatorValue: "@duel__victim_draw_<current()>->victimValue"
+        status: "duel_status_type.draw"
+
+    duel__initiator_draw_{1..2}:
+        until: <dateTimeBetween('-5 days', 'now')>
+        createdAt: <dateTimeBetween('-10 days', '-6 days')>
+        since: "@duel__initiator_draw_<current()>->createdAt"
+        initiator: "@user__1"
+        victim: "@user__<numberBetween(2, 100)>"
+        metric: "@metric__*"
+        victimValue: <numberBetween(1, 100)>
+        initiatorValue: "@duel__initiator_draw_<current()>->victimValue"
+        status: "duel_status_type.draw"
+
+    duel__victim_reject_{1..10}:
+        until: <dateTimeBetween('-5 days', 'now')>
+        createdAt: <dateTimeBetween('-10 days', '-6 days')>
+        since: "@duel__victim_reject_<current()>->createdAt"
+        victim: "@user__1"
+        initiator: "@user__<numberBetween(2, 100)>"
+        metric: "@metric__*"
+        status: "duel_status_type.rejected_by_victim"
+
+    duel__initiator_reject_{1..10}:
+        until: <dateTimeBetween('-5 days', 'now')>
+        createdAt: <dateTimeBetween('-10 days', '-6 days')>
+        since: "@duel__initiator_reject_<current()>->createdAt"
+        initiator: "@user__1"
+        victim: "@user__<numberBetween(2, 100)>"
+        metric: "@metric__*"
+        status: "duel_status_type.rejected_by_victim"
+
+
+
+

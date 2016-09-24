@@ -12,3 +12,8 @@ tournament:
     type:        rest
     resource:    AppBundle\Controller\API\TournamentController
     name_prefix: api_mobile_
+
+metric:
+    type:        rest
+    resource:    AppBundle\Controller\API\MetricController
+    name_prefix: api_mobile_
