@@ -5,22 +5,27 @@ AppBundle\Entity\Achievement:
     achievement_admiral (extends achievement):
         name: 'Адмирал продаж'
         image: "@image__achievement_admiral"
+        metric: '@metric__sales_in_rubles'
 
     achievement_service (extends achievement):
         name: 'Служу России'
         image: "@image__achievement_service"
+        metric: '@metric__sales_in_units'
 
     achievement_meeting (extends achievement):
         name: 'Главный экстраверт'
         image: "@image__achievement_meeting"
+        metric: '@metric__meets_in_units'
 
     achievement_idea (extends achievement):
         name: 'Генератор пиздатых идей'
         image: "@image__achievement_idea"
+        metric: '@metric__new_clients'
 
     achievement_chemp (extends achievement): # champion
         name: 'Чужой среди своих'
         image: "@image__achievement_chemp"
+        metric: '@metric__cold_calls'
 
 AppBundle\Entity\UserAchievement:
     user_achievement (template):
@@ -45,4 +50,3 @@ AppBundle\Entity\UserAchievement:
     user_achievement_chemp__{1..100} (extends user_achievement): # champion
         user: "@user__<current()>"
         achievement: "@achievement_chemp"
-

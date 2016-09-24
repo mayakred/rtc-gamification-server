@@ -3,12 +3,16 @@
 namespace AppBundle\Handler;
 
 use AppBundle\DBAL\Types\CallType;
+use AppBundle\DBAL\Types\PushType;
 use AppBundle\Entity\CallEvent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\MeetingEvent;
+use AppBundle\Entity\Metric;
 use AppBundle\Entity\SaleEvent;
 use AppBundle\Event\ExternalEvent;
+use AppBundle\Event\PushEvent;
 use AppBundle\Manager\EventManager;
+use AppBundle\Manager\MetricManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class EventHandler
@@ -19,6 +23,11 @@ class EventHandler
     protected $eventManager;
 
     /**
+     * @var MetricManager
+     */
+    protected $metricManager;
+
+    /**
      * @var EventDispatcherInterface
      */
     protected $dispatcher;
@@ -27,11 +36,13 @@ class EventHandler
      * UserHandler constructor.
      *
      * @param EventManager             $eventManager
+     * @param MetricManager            $metricManager
      * @param EventDispatcherInterface $dispatcher
      */
-    public function __construct(EventManager $eventManager, EventDispatcherInterface $dispatcher)
+    public function __construct(EventManager $eventManager, MetricManager $metricManager, EventDispatcherInterface $dispatcher)
     {
         $this->eventManager = $eventManager;
+        $this->metricManager = $metricManager;
         $this->dispatcher = $dispatcher;
     }
 
@@ -47,6 +58,58 @@ class EventHandler
         $this->dispatcher->dispatch(ExternalEvent::NAME, new ExternalEvent($event));
 
         return $event;
+    }
+
+    /**
+     * @param Event $event
+     */
+    public function handleExternalEvent(Event $event)
+    {
+        /**
+         * @var Metric[] $availableMetrics
+         */
+        $availableMetrics = $this->metricManager->findAvailableForIndividualTournaments();
+        $eventMetrics = $this->convertEventToMetrics($event);
+        $resultMetrics = [];
+        foreach ($availableMetrics as $availableMetric) {
+            foreach ($eventMetrics as $metricCode => $metricValue) {
+                if ($metricCode === $availableMetric->getCode()) {
+                    $resultMetrics[$metricCode] = $metricValue;
+                    break;
+                }
+            }
+        }
+
+        $em = $this->eventManager->getEntityManager();
+
+        $user = $event->getUser();
+        $userAchievements = $user->getUserAchievements();
+        foreach ($userAchievements as $userAchievement) {
+            $achievement = $userAchievement->getAchievement();
+            $isReachedAlready = $achievement->isReached($userAchievement);
+            $oldValue = $userAchievement->getValue();
+            foreach ($resultMetrics as $metricCode => $metricValue) {
+                if ($achievement->getMetric()->getCode() !== $metricCode) {
+                    continue;
+                }
+                $userAchievement->addValue($metricValue);
+            }
+
+            if (!$isReachedAlready && $oldValue < $userAchievement->getValue() && $achievement->isReached($userAchievement)) {
+                $this->dispatcher->dispatch(
+                    PushEvent::NAME,
+                    new PushEvent(
+                        '',
+                        '',
+                        $user,
+                        PushType::EVENT_REACHED
+                    )
+                );
+            }
+
+            $em->persist($userAchievement);
+        }
+        $em->flush();
     }
 
     /**
@@ -68,7 +131,7 @@ class EventHandler
             if ($event->getCallType() === CallType::COLD) {
                 $metrics['metric_type.cold_calls_in_units'] = 1;
             } elseif ($event->getCallType() === CallType::HOT) {
-                $metrics['metric_type.warp_calls_in_units'] = 1;
+                $metrics['metric_type.warm_calls_in_units'] = 1;
             }
         }
 

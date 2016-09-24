@@ -123,6 +123,18 @@ class UserAchievement
     }
 
     /**
+     * @param int $value
+     *
+     * @return UserAchievement
+     */
+    public function addValue($value)
+    {
+        $this->value += $value;
+
+        return $this;
+    }
+
+    /**
      * Get value.
      *
      * @return float

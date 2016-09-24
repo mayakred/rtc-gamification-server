@@ -8,6 +8,7 @@
  */
 namespace AppBundle\Event;
 
+use AppBundle\Entity\Achievement;
 use AppBundle\Entity\Duel;
 use AppBundle\Entity\User;
 use Symfony\Component\EventDispatcher\Event;
@@ -32,6 +33,11 @@ class PushEvent extends Event
     protected $duel;
 
     /**
+     * @var Achievement
+     */
+    protected $achievement;
+
+    /**
      * @var User
      */
     protected $user;
@@ -48,14 +54,17 @@ class PushEvent extends Event
      * @param $content
      * @param $user
      * @param $type
+     * @param Duel|null        $duel
+     * @param Achievement|null $achievement
      */
-    public function __construct($title = '', $content = '', $user, $type, $duel)
+    public function __construct($title = '', $content = '', $user, $type, Duel $duel = null, Achievement $achievement = null)
     {
         $this->title = $title;
         $this->content = $content;
         $this->user = $user;
         $this->type = $type;
         $this->duel = $duel;
+        $this->achievement = $achievement;
     }
 
     /**
@@ -154,6 +163,26 @@ class PushEvent extends Event
     public function setDuel($duel)
     {
         $this->duel = $duel;
+
+        return $this;
+    }
+
+    /**
+     * @return Achievement
+     */
+    public function getAchievement()
+    {
+        return $this->achievement;
+    }
+
+    /**
+     * @param Achievement $achievement
+     *
+     * @return PushEvent
+     */
+    public function setAchievement(Achievement $achievement)
+    {
+        $this->achievement = $achievement;
 
         return $this;
     }

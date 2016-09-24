@@ -60,6 +60,17 @@ class Achievement
     private $image;
 
     /**
+     * @var Metric
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Metric")
+     * @ORM\JoinColumn(name="metric_id", referencedColumnName="id", nullable=false)
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({Achievement::PUBLIC_CARD})
+     */
+    private $metric;
+
+    /**
      * Get id.
      *
      * @return int
@@ -139,5 +150,35 @@ class Achievement
     public function getMaxValue()
     {
         return $this->maxValue;
+    }
+
+    /**
+     * @param Metric $metric
+     *
+     * @return Achievement
+     */
+    public function setMetric(Metric $metric)
+    {
+        $this->metric = $metric;
+
+        return $this;
+    }
+
+    /**
+     * @return Metric
+     */
+    public function getMetric()
+    {
+        return $this->metric;
+    }
+
+    /**
+     * @param UserAchievement $userAchievement
+     *
+     * @return bool
+     */
+    public function isReached(UserAchievement $userAchievement)
+    {
+        return $userAchievement->getValue() >= $this->maxValue;
     }
 }
