@@ -11,9 +11,11 @@ namespace AppBundle\Controller\API;
 use AppBundle\Classes\Payload;
 use AppBundle\Controller\BaseAPIController;
 use AppBundle\DBAL\Types\DuelStatusType;
+use AppBundle\Entity\Achievement;
 use AppBundle\Entity\Duel;
 use AppBundle\Entity\Metric;
 use AppBundle\Entity\User;
+use AppBundle\Entity\UserAchievement;
 use AppBundle\Exceptions\ActionNotAllowedException;
 use AppBundle\Exceptions\FormInvalidException;
 use AppBundle\Exceptions\NotFoundException;
@@ -39,7 +41,11 @@ class UserController extends BaseAPIController implements ClassResourceInterface
         $userId = $slug === 'me' ? $this->getUser()->getId() : intval($slug);
         $user = $this->get('app.manager.user')->find($userId);
 
-        return $this->response(Payload::create($user), [User::FULL_CARD]);
+        return $this->response(Payload::create($user), [
+            User::FULL_CARD,
+            Achievement::PUBLIC_CARD,
+            UserAchievement::PUBLIC_CARD,
+        ]);
     }
 
     /**

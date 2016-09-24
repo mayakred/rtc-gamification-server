@@ -166,6 +166,17 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     protected $avatar;
 
     /**
+     * @var UserAchievement[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\UserAchievement", mappedBy="user", cascade={"persist", "remove"})
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({USER::FULL_CARD, User::SHORT_CARD})
+     * @JMS\SerializedName("achievements")
+     */
+    protected $userAchievements;
+
+    /**
      * @var string
      */
     protected $requestToken;
@@ -174,6 +185,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     {
         $this->phones = new ArrayCollection();
         $this->accessTokens = new ArrayCollection();
+        $this->userAchievements = new ArrayCollection();
         $this->rating = 0;
         $this->topPosition = 0;
         $this->gender = GenderType::MALE;
@@ -512,15 +524,37 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
     }
 
     /**
-     * @return array
+     * @param UserAchievement $userAchievement
      *
-     * @JMS\VirtualProperty()
-     * @JMS\SerializedName("achievements")
-     * @JMS\Groups({USER::FULL_CARD, User::SHORT_CARD})
+     * @return User
      */
-    public function getAchievements()
+    public function addUserAchievement(UserAchievement $userAchievement)
     {
-        return [];
+        $userAchievement->setUser($this);
+        $this->userAchievements->add($userAchievement);
+
+        return $this;
+    }
+
+    /**
+     * @param UserAchievement $userAchievement
+     *
+     * @return User
+     */
+    public function removeUserAchievement(UserAchievement $userAchievement)
+    {
+        $userAchievement->setUser(null);
+        $this->userAchievements->removeElement($userAchievement);
+
+        return $this;
+    }
+
+    /**
+     * @return UserAchievement[]|ArrayCollection
+     */
+    public function getUserAchievements()
+    {
+        return $this->userAchievements;
     }
 
     /**

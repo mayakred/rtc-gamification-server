@@ -2,23 +2,29 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Achievement.
  *
  * @ORM\Table(name="achievements__achievements")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AchievementRepository")
+ * @JMS\ExclusionPolicy("all")
  */
 class Achievement
 {
+    const PUBLIC_CARD = 'achievement__public';
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({Achievement::PUBLIC_CARD})
      */
     private $id;
 
@@ -26,13 +32,19 @@ class Achievement
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({Achievement::PUBLIC_CARD})
      */
     private $name;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="max_value", type="float")
+     * @ORM\Column(name="value", type="float")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({Achievement::PUBLIC_CARD})
      */
     private $maxValue;
 
@@ -41,27 +53,11 @@ class Achievement
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Image")
      * @ORM\JoinColumn(name="image_id", referencedColumnName="id", nullable=true)
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({Achievement::PUBLIC_CARD})
      */
     private $image;
-
-    /**
-     * @var User[]|ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinTable(name="achievements__achievements_users",
-     *      joinColumns={@ORM\JoinColumn(name="achievement_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
-     * )
-     */
-    private $users;
-
-    /**
-     * Achievement constructor.
-     */
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-    }
 
     /**
      * Get id.

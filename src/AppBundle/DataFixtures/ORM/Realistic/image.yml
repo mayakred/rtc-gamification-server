@@ -12,3 +12,33 @@ AppBundle\Entity\Image:
         providerReference: '<current()>.jpg'
         width: 200
         height: 200
+
+    image__achievement_admiral (extends image__image):
+        name: 'achievement_admiral.jpg'
+        providerReference: 'achievement_admiral.jpg'
+        width: 50
+        height: 50
+
+    image__achievement_service (extends image__image):
+        name: 'achievement_service.jpg'
+        providerReference: 'achievement_service.jpg'
+        width: 50
+        height: 50
+
+    image__achievement_meeting (extends image__image):
+        name: 'achievement_meeting.jpg'
+        providerReference: 'achievement_meeting.jpg'
+        width: 50
+        height: 50
+
+    image__achievement_idea (extends image__image):
+        name: 'achievement_idea.jpg'
+        providerReference: 'achievement_idea.jpg'
+        width: 50
+        height: 50
+
+    image__achievement_chemp (extends image__image):
+        name: 'achievement_chemp.jpg'
+        providerReference: 'achievement_idea.jpg'
+        width: 50
+        height: 50
