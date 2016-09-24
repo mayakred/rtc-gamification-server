@@ -15,7 +15,7 @@ AppBundle\Entity\Achievement:
         image: "@image__achievement_meeting"
 
     achievement_idea (extends achievement):
-        name: 'Генератор пиздатых идей aka ГэПэИ'
+        name: 'Генератор пиздатых идей'
         image: "@image__achievement_idea"
 
     achievement_chemp (extends achievement): # champion
@@ -26,27 +26,23 @@ AppBundle\Entity\UserAchievement:
     user_achievement (template):
         value: <numberBetween(50, 1500)>
 
-    user_achievement_admiral (extends user_achievement):
-        user: "@user__1"
+    user_achievement_admiral__{1..100} (extends user_achievement):
+        user:   "@user__<current()>"
         achievement: "@achievement_admiral"
 
-    user_achievement_service (extends user_achievement):
-        user: "@user__1"
+    user_achievement_service__{1..100} (extends user_achievement):
+        user:   "@user__<current()>"
         achievement: "@achievement_service"
 
-    user_achievement_meeting (extends user_achievement):
-        user: "@user__1"
+    user_achievement_meeting__{1..100} (extends user_achievement):
+        user: "@user__<current()>"
         achievement: "@achievement_meeting"
 
-    user_achievement_idea (extends user_achievement):
-        user: "@user__1"
+    user_achievement_idea__{1..100} (extends user_achievement):
+        user: "@user__<current()>"
         achievement: "@achievement_idea"
 
-    user_achievement_chemp (extends user_achievement): # champion
-        user: "@user__1"
-        achievement: "@achievement_chemp"
-
-    user_achievement{2..100} (extends user_achievement):
+    user_achievement_chemp__{1..100} (extends user_achievement): # champion
         user: "@user__<current()>"
-        achievement: "@achievement*"
+        achievement: "@achievement_chemp"
 
