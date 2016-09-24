@@ -61,6 +61,29 @@ class TournamentManager extends BaseEntityManager
     }
 
     /**
+     * @param User $user
+     *
+     * @return Tournament[]
+     */
+    public function findActiveByUser(User $user)
+    {
+        return $this
+            ->getRepository()
+            ->createQueryBuilder('t')
+            ->join('t.teams', 'teams')
+            ->join('teams.participants', 'p')
+            ->join('p.user', 'user')
+            ->where('p.user = :user')
+            ->andWhere('t.endDate > :cur_date')
+            ->setParameter('cur_date', new \DateTime('now', new \DateTimeZone('UTC')))
+            ->setParameter('user', $user)
+            ->orderBy('id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * @param Tournament $tournament
      */
     private function addTeams(Tournament $tournament)

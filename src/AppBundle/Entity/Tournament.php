@@ -6,6 +6,7 @@ use AppBundle\DBAL\Types\TournamentType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Tournament.
@@ -13,15 +14,22 @@ use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
  * @ORM\Table(name="tournaments__tournaments")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TournamentRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @JMS\ExclusionPolicy("all")
  */
 class Tournament extends TimestampableEntity
 {
+    const SHORT_CARD  = 'tournament__short';
+    const PUBLIC_CARD = 'tournament__public';
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({Tournament::SHORT_CARD, Tournament::PUBLIC_CARD})
      */
     private $id;
 
@@ -29,6 +37,9 @@ class Tournament extends TimestampableEntity
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({Tournament::SHORT_CARD, Tournament::PUBLIC_CARD})
      */
     private $name;
 
@@ -51,6 +62,9 @@ class Tournament extends TimestampableEntity
      *
      * @ORM\Column(name="type", type="TournamentType")
      * @DoctrineAssert\Enum(entity="AppBundle\DBAL\Types\TournamentType")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({Tournament::SHORT_CARD, Tournament::PUBLIC_CARD})
      */
     private $type;
 
