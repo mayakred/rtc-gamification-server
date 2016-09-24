@@ -36,6 +36,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request }
 
+    app.push.listener:
+        class: AppBundle\EventListener\PushEventListener
+        arguments: ['%onesignal.api_key%', '%onesignal.app_id%']
+        tags:
+            - { name: kernel.event_listener, event: 'app.event.push' }
+
     app.access_token_authenticator:
         class: AppBundle\Security\TokenAuthenticator
         public: false
@@ -94,10 +100,6 @@ services:
     app.manager.event:
         class: AppBundle\Manager\EventManager
         arguments: ['AppBundle\Entity\Event', '@doctrine']
-
-    app.manager.metric:
-        class: AppBundle\Manager\MetricManager
-        arguments: ['AppBundle\Entity\Metric', '@doctrine']
 
     app.manager.tournament:
         class: AppBundle\Manager\TournamentManager
