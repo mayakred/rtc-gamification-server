@@ -42,6 +42,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: 'app.event.push', method: 'processPush' }
 
+    app.external_event.listener:
+        class: AppBundle\EventListener\ExternalEventListener
+        arguments: ['@app.handler.duel']
+        tags:
+            - { name: kernel.event_listener, event: 'app.event.external', method: 'onExternalEvent' }
+
     app.access_token_authenticator:
         class: AppBundle\Security\TokenAuthenticator
         public: false
@@ -61,13 +67,17 @@ services:
             - '@event_dispatcher'
             - '%main.disable_password_generation%'
 
+    app.handler.duel:
+        class: AppBundle\Handler\DuelHandler
+        arguments: ['@app.manager.duel', '@app.manager.metric', '@app.handler.event']
+
     app.handler.user:
         class: AppBundle\Handler\UserHandler
         arguments: ['@app.manager.user', '@app.manager.access_token']
 
     app.handler.event:
         class: AppBundle\Handler\EventHandler
-        arguments: ['@app.manager.event']
+        arguments: ['@app.manager.event', '@event_dispatcher']
 
     app.manager.user:
         class: AppBundle\Manager\UserManager

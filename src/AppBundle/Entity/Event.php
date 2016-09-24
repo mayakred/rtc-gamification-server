@@ -68,7 +68,7 @@ abstract class Event extends TimestampableEntity implements PhonePartialInterfac
     /**
      * Get user.
      *
-     * @return int
+     * @return User
      */
     public function getUser()
     {
