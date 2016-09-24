@@ -10,3 +10,5 @@ AppBundle\Entity\Image:
     image__user_avatar_{1..27} (extends image__image):
         name: '<current()>.jpg'
         providerReference: '<current()>.jpg'
+        width: 200
+        height: 200
