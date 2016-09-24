@@ -62,6 +62,13 @@ class Tournament extends TimestampableEntity
     private $teams;
 
     /**
+     * @var TournamentMetricCondition[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TournamentMetricCondition", mappedBy="tournament", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $metricConditions;
+
+    /**
      * Tournament constructor.
      */
     public function __construct()
@@ -207,6 +214,40 @@ class Tournament extends TimestampableEntity
     public function getTeams()
     {
         return $this->teams;
+    }
+
+    /**
+     * @param TournamentMetricCondition $metricCondition
+     *
+     * @return Tournament
+     */
+    public function addMetricCondition(TournamentMetricCondition $metricCondition)
+    {
+        $metricCondition->setTournament($this);
+        $this->metricConditions[] = $metricCondition;
+
+        return $this;
+    }
+
+    /**
+     * @param TournamentMetricCondition $metricCondition
+     *
+     * @return Tournament
+     */
+    public function removeMetricCondition(TournamentMetricCondition $metricCondition)
+    {
+        $metricCondition->setTournament(null);
+        $this->metricConditions->removeElement($metricCondition);
+
+        return $this;
+    }
+
+    /**
+     * @return TournamentMetricCondition[]|ArrayCollection
+     */
+    public function getMetricConditions()
+    {
+        return $this->metricConditions;
     }
 
     /**

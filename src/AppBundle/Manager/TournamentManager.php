@@ -15,11 +15,24 @@ class TournamentManager extends BaseEntityManager
     private $userManager;
 
     /**
+     * @var MetricManager
+     */
+    private $metricManager;
+
+    /**
      * @param UserManager $userManager
      */
     public function setUserManager(UserManager $userManager)
     {
         $this->userManager = $userManager;
+    }
+
+    /**
+     * @param MetricManager $metricManager
+     */
+    public function setMetricManager(MetricManager $metricManager)
+    {
+        $this->metricManager = $metricManager;
     }
 
     /**

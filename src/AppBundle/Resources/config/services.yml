@@ -87,8 +87,13 @@ services:
         class: AppBundle\Manager\EventManager
         arguments: ['AppBundle\Entity\Event', '@doctrine']
 
+    app.manager.metric:
+        class: AppBundle\Manager\MetricManager
+        arguments: ['AppBundle\Entity\Metric', '@doctrine']
+
     app.manager.tournament:
         class: AppBundle\Manager\TournamentManager
         arguments: ['AppBundle\Entity\Tournament', '@doctrine']
         calls:
             - [ setUserManager, ["@app.manager.user"]]
+            - [ setMetricManager, ["app.manager.metric"]]
