@@ -279,7 +279,7 @@ class UserController extends BaseAPIController implements ClassResourceInterface
             $threshold = null;
             foreach ($activeTournament->getMetricConditions() as $metricCondition) {
                 if ($metricCondition->getMetric()->getCode() === $participantValue->getMetric()->getCode()) {
-                    $threshold = $metricCondition->getMoneyLimit();
+                    $threshold = $metricCondition->getLimit();
                 }
             }
             $result[] = [
@@ -321,7 +321,7 @@ class UserController extends BaseAPIController implements ClassResourceInterface
             $threshold = null;
             foreach ($activeTournament->getMetricConditions() as $metricCondition) {
                 if ($metricCondition->getMetric()->getCode() === $participantValue->getMetric()->getCode()) {
-                    $threshold = $metricCondition->getMoneyLimit();
+                    $threshold = $metricCondition->getLimit();
                 }
             }
             $result[] = [

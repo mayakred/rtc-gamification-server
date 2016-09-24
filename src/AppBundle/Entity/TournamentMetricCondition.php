@@ -46,18 +46,11 @@ class TournamentMetricCondition
     private $department;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="amount_limit", type="integer")
-     */
-    private $amountLimit;
-
-    /**
      * @var float
      *
-     * @ORM\Column(name="money_limit", type="integer")
+     * @ORM\Column(name="`limit`", type="float")
      */
-    private $moneyLimit;
+    private $limit;
 
     /**
      * Get id.
@@ -130,42 +123,22 @@ class TournamentMetricCondition
     }
 
     /**
-     * @param int $amountLimit
-     *
-     * @return TournamentMetricCondition
-     */
-    public function setAmountLimit($amountLimit)
-    {
-        $this->amountLimit = $amountLimit;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getAmountLimit()
-    {
-        return $this->amountLimit;
-    }
-
-    /**
-     * @param float $moneyLimit
-     *
-     * @return TournamentMetricCondition
-     */
-    public function setMoneyLimit($moneyLimit)
-    {
-        $this->moneyLimit = $moneyLimit;
-
-        return $this;
-    }
-
-    /**
      * @return float
      */
-    public function getMoneyLimit()
+    public function getLimit()
     {
-        return $this->moneyLimit;
+        return $this->limit;
+    }
+
+    /**
+     * @param float $limit
+     *
+     * @return $this
+     */
+    public function setLimit($limit)
+    {
+        $this->limit = $limit;
+
+        return $this;
     }
 }

@@ -182,8 +182,7 @@ class TournamentManager extends BaseEntityManager
                         $metricCondition
                             ->setMetric($metric)
                             ->setDepartment($department)
-                            ->setMoneyLimit(random_int(100, 500)) # hack for hackathon
-                            ->setAmountLimit(random_int(300, 500)) # hack for hackathon
+                            ->setLimit(random_int(100, 100000)) # hack for hackathon
                         ;
 
                         $tournament->addMetricCondition($metricCondition);
