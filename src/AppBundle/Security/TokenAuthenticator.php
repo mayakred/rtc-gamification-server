@@ -27,8 +27,7 @@ class TokenAuthenticator implements SimplePreAuthenticatorInterface
      */
     public function createToken(Request $request, $providerKey)
     {
-        $accessToken = 'TOKEN token=token';
-//        $accessToken = $request->headers->get('Authorization');
+        $accessToken = $request->headers->get('Authorization');
         if (!$accessToken) {
             throw new AccessTokenInvalidException();
         }
