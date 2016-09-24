@@ -77,7 +77,7 @@ class TournamentManager extends BaseEntityManager
             ->andWhere('t.endDate > :cur_date')
             ->setParameter('cur_date', new \DateTime('now', new \DateTimeZone('UTC')))
             ->setParameter('user', $user)
-            ->orderBy('id', 'DESC')
+            ->orderBy('t.id', 'DESC')
             ->getQuery()
             ->getResult()
         ;
