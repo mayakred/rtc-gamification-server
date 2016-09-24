@@ -3,6 +3,7 @@
 namespace AppBundle\Manager;
 
 use AppBundle\Entity\Tournament;
+use AppBundle\Entity\TournamentMetricCondition;
 use AppBundle\Entity\TournamentTeam;
 use AppBundle\Entity\TournamentTeamParticipant;
 use AppBundle\Entity\User;
@@ -65,6 +66,7 @@ class TournamentManager extends BaseEntityManager
     private function addTeams(Tournament $tournament)
     {
         $users = $this->userManager->findAllOrderByTopPosition();
+        $metrics = $tournament->isIndividual() ? $this->metricManager->findAvailableForTeamTournaments() : [];
 
         $teams = [];
         foreach ($users as $user) {
@@ -77,6 +79,18 @@ class TournamentManager extends BaseEntityManager
                 if (!array_key_exists($department->getId(), $teams)) {
                     $teams[$department->getId()] = new TournamentTeam();
                     $teams[$department->getId()]->setDepartment($department);
+
+                    foreach ($metrics as $metric) {
+                        $metricCondition = new TournamentMetricCondition();
+                        $metricCondition
+                            ->setMetric($metric)
+                            ->setDepartment($department)
+                            ->setMoneyLimit(random_int(100, 500)) # hack for hackathon
+                            ->setAmountLimit(random_int(300, 500)) # hack for hackathon
+                        ;
+
+                        $tournament->addMetricCondition($metricCondition);
+                    }
                 }
 
                 /** @var TournamentTeam $team */
