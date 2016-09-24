@@ -47,6 +47,11 @@ class Tournament extends TimestampableEntity
      * @var \DateTime
      *
      * @ORM\Column(name="startDate", type="datetime")
+     *
+     * @JMS\Expose()
+     * @JMS\Type("Timestamp")
+     * @JMS\SerializedName("start_at")
+     * @JMS\Groups({Tournament::SHORT_CARD, Tournament::PUBLIC_CARD})
      */
     private $startDate;
 
@@ -54,6 +59,11 @@ class Tournament extends TimestampableEntity
      * @var \DateTime
      *
      * @ORM\Column(name="endDate", type="datetime")
+     *
+     * @JMS\Expose()
+     * @JMS\Type("Timestamp")
+     * @JMS\SerializedName("end_at")
+     * @JMS\Groups({Tournament::SHORT_CARD, Tournament::PUBLIC_CARD})
      */
     private $endDate;
 
@@ -72,6 +82,9 @@ class Tournament extends TimestampableEntity
      * @var TournamentTeam[]|ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\TournamentTeam", mappedBy="tournament", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({Tournament::PUBLIC_CARD})
      */
     private $teams;
 

@@ -83,6 +83,21 @@ class TournamentManager extends BaseEntityManager
         ;
     }
 
+    public function findFullInfo($id)
+    {
+        return $this
+            ->getRepository()
+            ->createQueryBuilder('t')
+            ->join('t.teams', 'teams')
+            ->join('teams.participants', 'p')
+            ->join('p.user', 'user')
+            ->where('t.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     /**
      * @param Tournament $tournament
      */

@@ -4,21 +4,28 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Tournament.
  *
  * @ORM\Table(name="tournaments__teams")
  * @ORM\Entity()
+ * @JMS\ExclusionPolicy("all")
  */
 class TournamentTeam
 {
+    const PUBLIC_CARD = 'tournament_team__public';
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({TournamentTeam::PUBLIC_CARD})
      */
     private $id;
 
@@ -27,6 +34,9 @@ class TournamentTeam
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Department")
      * @ORM\JoinColumn(name="department_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({TournamentTeam::PUBLIC_CARD})
      */
     private $department;
 
@@ -42,6 +52,9 @@ class TournamentTeam
      * @var TournamentTeamParticipant[]|ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\TournamentTeamParticipant", mappedBy="team", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({TournamentTeam::PUBLIC_CARD})
      */
     private $participants;
 

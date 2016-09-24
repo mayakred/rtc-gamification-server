@@ -3,21 +3,29 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Tournament.
  *
  * @ORM\Table(name="tournaments__teams_participants")
  * @ORM\Entity()
+ *
+ * @JMS\ExclusionPolicy("all")
  */
 class TournamentTeamParticipant
 {
+    const PUBLIC_CARD = 'tournament_team_participant__public';
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({TournamentTeamParticipant::PUBLIC_CARD})
      */
     private $id;
 
@@ -34,6 +42,9 @@ class TournamentTeamParticipant
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({TournamentTeamParticipant::PUBLIC_CARD})
      */
     private $user;
 
