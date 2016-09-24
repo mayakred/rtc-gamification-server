@@ -15,11 +15,13 @@ AppBundle\Entity\Metric:
         code: 'metric_type.sales_in_rubles_percentage'
         name: 'Превышение плана по сумме'
         unitType: 'unit_type.percent'
+        availableForDuel: false
 
     metric__sales_in_units_percentage:
         code: 'metric_type.sales_in_units_percentage'
         name: 'Превышение плана по количеству'
         unitType: 'unit_type.percent'
+        availableForDuel: false
 
     metric__new_clients:
         code: 'metric_type.new_clients_in_units'
