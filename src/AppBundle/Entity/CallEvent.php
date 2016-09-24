@@ -47,7 +47,7 @@ class CallEvent extends Event
     /**
      * {@inheritdoc}
      */
-    public function getTaskType()
+    public function getEventType()
     {
         return EventType::CALL;
     }
