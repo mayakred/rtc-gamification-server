@@ -10,6 +10,7 @@ namespace AppBundle\EventListener;
 
 use AppBundle\Event\ExternalEvent;
 use AppBundle\Handler\DuelHandler;
+use AppBundle\Handler\TournamentHandler;
 
 class ExternalEventListener
 {
@@ -19,17 +20,25 @@ class ExternalEventListener
     protected $duelHandler;
 
     /**
+     * @var TournamentHandler
+     */
+    protected $tournamentHandler;
+
+    /**
      * ExternalEventListener constructor.
      *
-     * @param DuelHandler $duelHandler
+     * @param DuelHandler       $duelHandler
+     * @param TournamentHandler $tournamentHandler
      */
-    public function __construct(DuelHandler $duelHandler)
+    public function __construct(DuelHandler $duelHandler, TournamentHandler $tournamentHandler)
     {
         $this->duelHandler = $duelHandler;
+        $this->tournamentHandler = $tournamentHandler;
     }
 
     public function onExternalEvent(ExternalEvent $externalEvent)
     {
         $this->duelHandler->handleExternalEvent($externalEvent->getEvent());
+        $this->tournamentHandler->handleExternalEvent($externalEvent->getEvent());
     }
 }
