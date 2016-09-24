@@ -60,19 +60,19 @@ class TournamentTeam
     private $participants;
 
     /**
-     * @var TournamentTeamResult[]|ArrayCollection
+     * @var MetricValue[]|ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TournamentTeamResult", mappedBy="team", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MetricValue", mappedBy="team", cascade={"persist", "remove"})
      */
-    private $results;
+    private $values;
 
     /**
      * TournamentTeam constructor.
      */
     public function __construct()
     {
-        $this->results = new ArrayCollection();
         $this->participants = new ArrayCollection();
+        $this->values = new ArrayCollection();
     }
 
     /**
@@ -126,40 +126,6 @@ class TournamentTeam
     }
 
     /**
-     * @param TournamentTeamResult $result
-     *
-     * @return TournamentTeam
-     */
-    public function addResult(TournamentTeamResult $result)
-    {
-        $result->setTeam($this);
-        $this->results[] = $result;
-
-        return $this;
-    }
-
-    /**
-     * @param TournamentTeamResult $result
-     *
-     * @return TournamentTeam
-     */
-    public function removeResult(TournamentTeamResult $result)
-    {
-        $result->setTeam(null);
-        $this->results->removeElement($result);
-
-        return $this;
-    }
-
-    /**
-     * @return TournamentTeamResult[]|ArrayCollection
-     */
-    public function getResults()
-    {
-        return $this->results;
-    }
-
-    /**
      * @param TournamentTeamParticipant $participant
      *
      * @return TournamentTeam
@@ -191,5 +157,41 @@ class TournamentTeam
     public function getParticipants()
     {
         return $this->participants;
+    }
+
+    /**
+     * @return MetricValue[]|ArrayCollection
+     */
+    public function getValues()
+    {
+        return $this->values;
+    }
+
+    /**
+     * @param MetricValue|null $metricValue
+     *
+     * @return $this
+     */
+    public function addValue(MetricValue $metricValue = null)
+    {
+        $metricValue->setTeam($this);
+        $metricValue->setParticipant(null);
+        $this->values->add($metricValue);
+
+        return $this;
+    }
+
+    /**
+     * @param MetricValue $metricValue
+     *
+     * @return $this
+     */
+    public function removeValue(MetricValue $metricValue)
+    {
+        $metricValue->setTeam(null);
+        $metricValue->setParticipant(null);
+        $this->values->removeElement($metricValue);
+
+        return $this;
     }
 }

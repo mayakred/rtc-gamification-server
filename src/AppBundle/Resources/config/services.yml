@@ -44,7 +44,7 @@ services:
 
     app.external_event.listener:
         class: AppBundle\EventListener\ExternalEventListener
-        arguments: ['@app.handler.duel', '@app.handler.event']
+        arguments: ['@app.handler.duel', '@app.handler.event', '@app.handler.tournament']
         tags:
             - { name: kernel.event_listener, event: 'app.event.external', method: 'onExternalEvent' }
 
@@ -83,6 +83,10 @@ services:
         class: AppBundle\Manager\UserManager
         arguments: ['AppBundle\Entity\User', '@doctrine']
 
+    app.handler.tournament:
+        class: AppBundle\Handler\TournamentHandler
+        arguments: ['@app.handler.event', '@app.manager.tournament', '@app.manager.tournament_team_participant']
+
     app.manager.access_token:
         class: AppBundle\Manager\AccessTokenManager
         arguments: ['AppBundle\Entity\AccessToken', '@doctrine']
@@ -114,6 +118,10 @@ services:
     app.manager.achievement:
         class: AppBundle\Manager\AchievementManager
         arguments: ['AppBundle\Entity\Achievement', '@doctrine']
+
+    app.manager.tournament_team_participant:
+        class: AppBundle\Manager\TournamentTeamParticipantManager
+        arguments: ['AppBundle\Entity\TournamentTeamParticipant', '@doctrine']
 
     app.manager.tournament:
         class: AppBundle\Manager\TournamentManager

@@ -667,4 +667,18 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
 
         return $activePhone;
     }
+
+    /**
+     * @param UserAchievement[]|ArrayCollection $userAchievements
+     *
+     * @return $this
+     */
+    public function setUserAchievements($userAchievements)
+    {
+        foreach($userAchievements as $userAchievement) {
+            $this->addUserAchievement($userAchievement);
+        }
+
+        return $this;
+    }
 }

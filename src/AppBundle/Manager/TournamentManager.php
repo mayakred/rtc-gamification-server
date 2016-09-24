@@ -2,6 +2,7 @@
 
 namespace AppBundle\Manager;
 
+use AppBundle\Entity\MetricValue;
 use AppBundle\Entity\Tournament;
 use AppBundle\Entity\TournamentMetricCondition;
 use AppBundle\Entity\TournamentTeam;
@@ -84,6 +85,33 @@ class TournamentManager extends BaseEntityManager
     }
 
     /**
+     * @param User $user
+     * @param $type
+     *
+     * @return Tournament
+     */
+    public function findActiveByTypeAndUser(User $user, $type)
+    {
+        return $this
+            ->getRepository()
+            ->createQueryBuilder('t')
+            ->join('t.teams', 'teams')
+            ->join('teams.participants', 'p')
+            ->join('p.user', 'user')
+            ->where('p.user = :user')
+            ->andWhere('t.endDate > :cur_date')
+            ->andWhere('t.type = :type')
+            ->setParameter('cur_date', new \DateTime('now', new \DateTimeZone('UTC')))
+            ->setParameter('user', $user)
+            ->setParameter('type', $type)
+            ->orderBy('t.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult()
+            ;
+    }
+
+    /**
      * @param int $id
      * @param int $participantId
      *
@@ -132,27 +160,29 @@ class TournamentManager extends BaseEntityManager
     private function addTeams(Tournament $tournament)
     {
         $users = $this->userManager->findAllOrderByTopPosition();
-        $metrics = $tournament->isIndividual() ? $this->metricManager->findAvailableForTeamTournaments() : [];
+        $metrics = $tournament->isIndividual() ? [] : $this->metricManager->findAvailableForTeamTournaments();
 
+        /** @var TournamentTeam[] $teams */
         $teams = [];
         foreach ($users as $user) {
             /** @var TournamentTeam|null $team */
             $team = null;
             if ($tournament->isIndividual()) {
                 $team = new TournamentTeam();
+                $this->createTeamValues($team, true);
             } else {
                 $department = $user->getDepartment();
                 if (!array_key_exists($department->getId(), $teams)) {
                     $teams[$department->getId()] = new TournamentTeam();
                     $teams[$department->getId()]->setDepartment($department);
+                    $this->createTeamValues($teams[$department->getId()], false);
 
                     foreach ($metrics as $metric) {
                         $metricCondition = new TournamentMetricCondition();
                         $metricCondition
                             ->setMetric($metric)
                             ->setDepartment($department)
-                            ->setMoneyLimit(random_int(100, 500)) # hack for hackathon
-                            ->setAmountLimit(random_int(300, 500)) # hack for hackathon
+                            ->setLimit(random_int(100, 100000)) # hack for hackathon
                         ;
 
                         $tournament->addMetricCondition($metricCondition);
@@ -163,7 +193,8 @@ class TournamentManager extends BaseEntityManager
                 $team = $teams[$department->getId()];
             }
 
-            $team->addParticipant($this->createParticipant($user));
+            $participant = $this->createParticipant($user, $tournament->isIndividual());
+            $team->addParticipant($participant);
 
             $tournament->addTeam($team);
         }
@@ -171,14 +202,39 @@ class TournamentManager extends BaseEntityManager
 
     /**
      * @param User $user
+     * @param bool $individual
      *
      * @return TournamentTeamParticipant
      */
-    private function createParticipant(User $user)
+    private function createParticipant(User $user, $individual)
     {
         $participant = new TournamentTeamParticipant();
         $participant->setUser($user);
+        $metrics = $individual
+            ? $this->metricManager->findAvailableForIndividualTournaments()
+            : $this->metricManager->findAvailableForTeamTournaments();
+        foreach ($metrics as $metric) {
+            $metricValue = new MetricValue();
+            $metricValue->setMetric($metric);
+            $participant->addValue($metricValue);
+        }
 
         return $participant;
+    }
+
+    /**
+     * @param TournamentTeam $team
+     * @param $individual
+     */
+    private function createTeamValues(TournamentTeam $team, $individual)
+    {
+        $metrics = $individual
+            ? $this->metricManager->findAvailableForIndividualTournaments()
+            : $this->metricManager->findAvailableForTeamTournaments();
+        foreach ($metrics as $metric) {
+            $metricValue = new MetricValue();
+            $metricValue->setMetric($metric);
+            $team->addValue($metricValue);
+        }
     }
 }
