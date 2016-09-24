@@ -60,18 +60,10 @@ class TournamentTeam
     private $participants;
 
     /**
-     * @var TournamentTeamResult[]|ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TournamentTeamResult", mappedBy="team", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
-    private $results;
-
-    /**
      * TournamentTeam constructor.
      */
     public function __construct()
     {
-        $this->results = new ArrayCollection();
         $this->participants = new ArrayCollection();
     }
 
@@ -123,40 +115,6 @@ class TournamentTeam
     public function getTournament()
     {
         return $this->tournament;
-    }
-
-    /**
-     * @param TournamentTeamResult $result
-     *
-     * @return TournamentTeam
-     */
-    public function addResult(TournamentTeamResult $result)
-    {
-        $result->setTeam($this);
-        $this->results[] = $result;
-
-        return $this;
-    }
-
-    /**
-     * @param TournamentTeamResult $result
-     *
-     * @return TournamentTeam
-     */
-    public function removeResult(TournamentTeamResult $result)
-    {
-        $result->setTeam(null);
-        $this->results->removeElement($result);
-
-        return $this;
-    }
-
-    /**
-     * @return TournamentTeamResult[]|ArrayCollection
-     */
-    public function getResults()
-    {
-        return $this->results;
     }
 
     /**
