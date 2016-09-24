@@ -111,6 +111,10 @@ services:
         class: AppBundle\Manager\EventManager
         arguments: ['AppBundle\Entity\Event', '@doctrine']
 
+    app.manager.tournament_team_participant:
+        class: AppBundle\Manager\TournamentTeamParticipantManager
+        arguments: ['AppBundle\Entity\TournamentTeamParticipant', '@doctrine']
+
     app.manager.tournament:
         class: AppBundle\Manager\TournamentManager
         arguments: ['AppBundle\Entity\Tournament', '@doctrine']
