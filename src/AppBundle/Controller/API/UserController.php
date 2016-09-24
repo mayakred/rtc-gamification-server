@@ -57,7 +57,7 @@ class UserController extends BaseAPIController implements ClassResourceInterface
     {
         $users = $this->get('app.manager.user')->findAllOrderByTopPosition();
 
-        return $this->response(Payload::create($users), [User::SHORT_CARD]);
+        return $this->response(Payload::create($users), [User::SHORT_CARD, Achievement::PUBLIC_CARD, UserAchievement::PUBLIC_CARD]);
     }
 
     /**
@@ -86,7 +86,7 @@ class UserController extends BaseAPIController implements ClassResourceInterface
     {
         $duels = $this->get('app.manager.duel')->findAllRelatedToUser($this->getUser());
 
-        return $this->response(Payload::create($duels), [User::SHORT_CARD, Duel::FULL_CARD]);
+        return $this->response(Payload::create($duels), [User::SHORT_CARD, Duel::FULL_CARD, Achievement::PUBLIC_CARD, UserAchievement::PUBLIC_CARD]);
     }
 
     /**
@@ -229,6 +229,6 @@ class UserController extends BaseAPIController implements ClassResourceInterface
             )
         );
 
-        return $this->response(Payload::create($duel), [User::SHORT_CARD, Duel::FULL_CARD]);
+        return $this->response(Payload::create($duel), [User::SHORT_CARD, Duel::FULL_CARD, Achievement::PUBLIC_CARD, UserAchievement::PUBLIC_CARD]);
     }
 }

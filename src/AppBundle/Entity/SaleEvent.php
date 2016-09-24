@@ -57,7 +57,7 @@ class SaleEvent extends Event
     /**
      * {@inheritdoc}
      */
-    public function getTaskType()
+    public function getEventType()
     {
         return EventType::SALE;
     }

@@ -41,7 +41,7 @@ class MeetingEvent extends Event
     /**
      * {@inheritdoc}
      */
-    public function getTaskType()
+    public function getEventType()
     {
         return EventType::MEETING;
     }
