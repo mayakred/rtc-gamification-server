@@ -18,6 +18,7 @@ doctrine:
             DepartmentType: AppBundle\DBAL\Types\DepartmentType
             json:           Sonata\Doctrine\Types\JsonType
             UnitType:       AppBundle\DBAL\Types\UnitType
+            DuelStatusType: AppBundle\DBAL\Types\DuelStatusType
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
