@@ -11,14 +11,20 @@ doctrine:
         mapping_types:
             enum: string
         types:
-            CallType:     AppBundle\DBAL\Types\CallType
-            EventType:    AppBundle\DBAL\Types\EventType
-            PlatformType: AppBundle\DBAL\Types\PlatformType
-            GenderType: AppBundle\DBAL\Types\GenderType
+            CallType:       AppBundle\DBAL\Types\CallType
+            EventType:      AppBundle\DBAL\Types\EventType
+            PlatformType:   AppBundle\DBAL\Types\PlatformType
+            GenderType:     AppBundle\DBAL\Types\GenderType
             TournamentType: AppBundle\DBAL\Types\TournamentType
             DepartmentType: AppBundle\DBAL\Types\DepartmentType
+            json:           Sonata\Doctrine\Types\JsonType
+            UnitType:       AppBundle\DBAL\Types\UnitType
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+        mappings:
+            SonataMediaBundle: ~
+            ApplicationSonataMediaBundle: ~
+            SonataClassificationBundle: ~

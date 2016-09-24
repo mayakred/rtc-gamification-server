@@ -1,0 +1,46 @@
+AppBundle\Entity\Metric:
+    metric__sales_in_rubles:
+        code: 'metric_type.sales_in_rubles'
+        name: 'Продажи в рублях'
+        unitType: 'unit_type.rubles'
+        availableForIndividualTournaments: true
+
+    metric__sales_in_units:
+        code: 'metric_type.sales_in_units'
+        name: 'Продажи в штуках'
+        unitType: 'unit_type.units'
+        availableForIndividualTournaments: true
+
+    metric__sales_in_rubles_percentage:
+        code: 'metric_type.sales_in_rubles_percentage'
+        name: 'Превышение плана по сумме'
+        unitType: 'unit_type.percent'
+
+    metric__sales_in_units_percentage:
+        code: 'metric_type.sales_in_units_percentage'
+        name: 'Превышение плана по количеству'
+        unitType: 'unit_type.percent'
+
+    metric__new_clients:
+        code: 'metric_type.new_clients_in_units'
+        name: 'Привлечение новых клиентов'
+        unitType: 'unit_type.units'
+        availableForIndividualTournaments: true
+
+    metric__cold_calls:
+        code: 'metric_type.cold_calls_in_units'
+        name: 'Холодные звонки'
+        unitType: 'unit_type.units'
+        availableForIndividualTournaments: true
+
+    metric__warm_calls:
+        code: 'metric_type.warm_calls_in_units'
+        name: 'Теплые звонки'
+        unitType: 'unit_type.units'
+        availableForIndividualTournaments: true
+
+    metric__meets_in_units:
+        code: 'metric_type.meets_in_units'
+        name: 'Количество встреч'
+        unitType: 'unit_type.units'
+        availableForIndividualTournaments: true
