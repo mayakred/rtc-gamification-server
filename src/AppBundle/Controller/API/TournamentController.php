@@ -29,7 +29,12 @@ class TournamentController extends BaseAPIController implements ClassResourceInt
 
         $tournaments = $this->get('app.manager.tournament')->findActiveByUser($user);
 
-        return $this->response(Payload::create([$tournaments]), [Tournament::SHORT_CARD]);
+        return $this->response(Payload::create([$tournaments]), [
+            Tournament::PUBLIC_CARD,
+            TournamentTeam::PUBLIC_CARD,
+            TournamentTeamParticipant::PUBLIC_CARD,
+            User::SHORT_CARD,
+        ]);
     }
 
     /**
