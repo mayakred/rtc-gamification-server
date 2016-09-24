@@ -102,7 +102,9 @@ class EventHandler
                         '',
                         '',
                         $user,
-                        PushType::EVENT_REACHED
+                        PushType::EVENT_REACHED,
+                        null,
+                        $achievement
                     )
                 );
             }

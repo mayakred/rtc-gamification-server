@@ -63,7 +63,8 @@ class PushEventListener
 
         $data = [
             'type' => $event->getType(),
-            'duel_id' => $event->getDuel()->getId(),
+            'duel_id' => !$event->getDuel() ? null : $event->getDuel()->getId(),
+            'achievement_id' => !$event->getAchievement() ? null : $event->getAchievement()->getId(),
         ];
         switch ($event->getType()) {
             case PushType::DUEL_CREATED:

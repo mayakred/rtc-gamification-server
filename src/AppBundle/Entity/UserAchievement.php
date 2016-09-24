@@ -50,7 +50,7 @@ class UserAchievement
     /**
      * @var float
      *
-     * @ORM\Column(name="max_value", type="float")
+     * @ORM\Column(name="value", type="float")
      *
      * @JMS\Expose()
      * @JMS\Groups({UserAchievement::PUBLIC_CARD})
