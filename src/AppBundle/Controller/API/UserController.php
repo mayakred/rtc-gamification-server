@@ -13,6 +13,7 @@ use AppBundle\Controller\BaseAPIController;
 use AppBundle\DBAL\Types\DuelStatusType;
 use AppBundle\DBAL\Types\PushType;
 use AppBundle\DBAL\Types\TournamentType;
+use AppBundle\DBAL\Types\UnitType;
 use AppBundle\Entity\Achievement;
 use AppBundle\Entity\Duel;
 use AppBundle\Entity\Metric;
@@ -282,20 +283,20 @@ class UserController extends BaseAPIController implements ClassResourceInterface
                     $threshold = $metricCondition->getLimit();
                 }
             }
+            $isPercent = $participantValue->getMetric()->getUnitType() === UnitType::PERCENT && $threshold !== null;
             $result[] = [
                 'id' => $participantValue->getId(),
-                'participant_value' => $participantValue->getValue(),
+                'participant_value' => $isPercent ? $participantValue->getValue() / $threshold : $participantValue->getValue(),
                 'metric' => $participantValue->getMetric(),
                 'is_perviy_subview' => true, //sic(!)
                 'is_vtoroy_subview' => false, //sic(!) x2
                 'department' => $user->getDepartment(), //sic(!) x3
-                'winner_value' => $winnerValue,
-                'team_value' => $teamValueFloat,
+                'winner_value' => $isPercent ? $winnerValue / $threshold : $winnerValue,
+                'team_value' => $isPercent ? $teamValueFloat / $threshold : $threshold,
                 'user_id' => $user->getId(), //sic(!) x4
                 'threshold_value' => $threshold,
             ];
         }
-
         $activeTournament = $this
             ->get('app.manager.tournament')
             ->findActiveByTypeAndUser($user, TournamentType::TEAM);
@@ -303,7 +304,6 @@ class UserController extends BaseAPIController implements ClassResourceInterface
         $participant = $this
             ->get('app.manager.tournament_team_participant')
             ->findOneByTournamentAndUser($activeTournament, $user);
-        $result = [];
         foreach ($participant->getValues() as $participantValue) {
             //find max metric value
             $winnerValue = 0;
@@ -324,15 +324,16 @@ class UserController extends BaseAPIController implements ClassResourceInterface
                     $threshold = $metricCondition->getLimit();
                 }
             }
+            $isPercent = $participantValue->getMetric()->getUnitType() === UnitType::PERCENT && $threshold !== null;
             $result[] = [
                 'id' => $participantValue->getId(),
-                'participant_value' => $participantValue->getValue(),
+                'participant_value' => $isPercent ? $participantValue->getValue() / $threshold : $participantValue->getValue(),
                 'metric' => $participantValue->getMetric(),
                 'is_perviy_subview' => false, //sic(!)
                 'is_vtoroy_subview' => true, //sic(!) x2
                 'department' => $user->getDepartment(), //sic(!) x3
-                'winner_value' => $winnerValue,
-                'team_value' => $teamValueFloat,
+                'winner_value' => $isPercent ? $winnerValue / $threshold : $winnerValue,
+                'team_value' => $isPercent ? $teamValueFloat / $threshold : $threshold,
                 'user_id' => $user->getId(), //sic(!) x4
                 'threshold_value' => $threshold,
             ];
