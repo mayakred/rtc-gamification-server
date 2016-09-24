@@ -58,6 +58,9 @@ class PushEventListener
             return;
         }
 
+        $title = $event->getTitle();
+        $content = $event->getContent();
+
         $data = [
             'type' => $event->getType(),
             'duel_id' => $event->getDuel()->getId(),
