@@ -39,6 +39,13 @@ class TournamentTeam
     private $tournament;
 
     /**
+     * @var TournamentTeamParticipant[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TournamentTeamParticipant", mappedBy="team", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $participants;
+
+    /**
      * @var TournamentTeamResult[]|ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\TournamentTeamResult", mappedBy="team", cascade={"persist", "remove"}, orphanRemoval=true)
@@ -51,6 +58,7 @@ class TournamentTeam
     public function __construct()
     {
         $this->results = new ArrayCollection();
+        $this->participants = new ArrayCollection();
     }
 
     /**
@@ -135,5 +143,39 @@ class TournamentTeam
     public function getResults()
     {
         return $this->results;
+    }
+
+    /**
+     * @param TournamentTeamParticipant $participant
+     *
+     * @return TournamentTeam
+     */
+    public function addParticipant(TournamentTeamParticipant $participant)
+    {
+        $participant->setTournament($this);
+        $this->participants[] = $participant;
+
+        return $this;
+    }
+
+    /**
+     * @param TournamentTeamParticipant $participant
+     *
+     * @return TournamentTeam
+     */
+    public function removeParticipant(TournamentTeamParticipant $participant)
+    {
+        $participant->setTournament(null);
+        $this->participants->removeElement($participant);
+
+        return $this;
+    }
+
+    /**
+     * @return TournamentTeamParticipant[]|ArrayCollection
+     */
+    public function getParticipants()
+    {
+        return $this->participants;
     }
 }

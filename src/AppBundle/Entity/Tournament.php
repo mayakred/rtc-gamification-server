@@ -56,7 +56,7 @@ class Tournament extends TimestampableEntity
     /**
      * @var TournamentTeam[]|ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TournamentTeam", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TournamentTeam", mappedBy="tournament", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $teams;
 
