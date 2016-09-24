@@ -218,7 +218,7 @@ class UserController extends BaseAPIController implements ClassResourceInterface
                 '',
                 '',
                 $duel->getVictim(),
-                PushType::DUEL_STARTED,
+                PushType::DUEL_CREATED,
                 $duel
             )
         );
