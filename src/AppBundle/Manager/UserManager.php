@@ -97,4 +97,20 @@ class UserManager extends BaseEntityManager
 
         return $user;
     }
+
+    public function recalcUserPosition()
+    {
+        /**
+         * @var User[] $users
+         */
+        $users = $this->getRepository()->createQueryBuilder('u')
+            ->addOrderBy('u.rating', 'DESC')
+            ->getQuery()
+            ->getResult();
+        for ($topPosition = 0; $topPosition < count($users); $topPosition++) {
+            $users[$topPosition]->setTopPosition($topPosition + 1);
+            $this->save($users[$topPosition], false);
+        }
+        $this->getEntityManager()->flush();
+    }
 }
