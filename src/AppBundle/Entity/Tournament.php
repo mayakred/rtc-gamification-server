@@ -216,8 +216,10 @@ class Tournament extends TimestampableEntity
      */
     public function addTeam(TournamentTeam $team)
     {
-        $team->setTournament($this);
-        $this->teams[] = $team;
+        if (!$this->teams->contains($team)) {
+            $team->setTournament($this);
+            $this->teams->add($team);
+        }
 
         return $this;
     }

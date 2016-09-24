@@ -60,11 +60,19 @@ class TournamentTeam
     private $participants;
 
     /**
+     * @var MetricValue[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MetricValue", mappedBy="team", cascade={"persist", "remove"})
+     */
+    private $values;
+
+    /**
      * TournamentTeam constructor.
      */
     public function __construct()
     {
         $this->participants = new ArrayCollection();
+        $this->values = new ArrayCollection();
     }
 
     /**
@@ -149,5 +157,41 @@ class TournamentTeam
     public function getParticipants()
     {
         return $this->participants;
+    }
+
+    /**
+     * @return MetricValue[]|ArrayCollection
+     */
+    public function getValues()
+    {
+        return $this->values;
+    }
+
+    /**
+     * @param MetricValue|null $metricValue
+     *
+     * @return $this
+     */
+    public function addValue(MetricValue $metricValue = null)
+    {
+        $metricValue->setTeam($this);
+        $metricValue->setParticipant(null);
+        $this->values->add($metricValue);
+
+        return $this;
+    }
+
+    /**
+     * @param MetricValue $metricValue
+     *
+     * @return $this
+     */
+    public function removeValue(MetricValue $metricValue)
+    {
+        $metricValue->setTeam(null);
+        $metricValue->setParticipant(null);
+        $this->values->removeElement($metricValue);
+
+        return $this;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
@@ -53,6 +54,22 @@ class TournamentTeamParticipant
     private $user;
 
     /**
+     * @var MetricValue[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MetricValue", mappedBy="participant", cascade={"persist", "remove"})
+     *
+     * @JMS\Expose()
+     * @JMS\SerializedName("statistic")
+     * @JMS\Groups({TournamentTeam::PUBLIC_CARD})
+     */
+    private $values;
+
+    public function __construct()
+    {
+        $this->values = new ArrayCollection();
+    }
+
+    /**
      * Get id.
      *
      * @return int
@@ -100,5 +117,41 @@ class TournamentTeamParticipant
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * @return MetricValue[]|ArrayCollection
+     */
+    public function getValues()
+    {
+        return $this->values;
+    }
+
+    /**
+     * @param MetricValue|null $metricValue
+     *
+     * @return $this
+     */
+    public function addValue(MetricValue $metricValue = null)
+    {
+        $metricValue->setTeam(null);
+        $metricValue->setParticipant($this);
+        $this->values->add($metricValue);
+
+        return $this;
+    }
+
+    /**
+     * @param MetricValue $metricValue
+     *
+     * @return $this
+     */
+    public function removeValue(MetricValue $metricValue)
+    {
+        $metricValue->setTeam(null);
+        $metricValue->setParticipant(null);
+        $this->values->removeElement($metricValue);
+
+        return $this;
     }
 }

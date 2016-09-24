@@ -20,6 +20,10 @@ class MetricValue
 {
     /**
      * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
 
@@ -30,6 +34,22 @@ class MetricValue
      * @ORM\JoinColumn(name="metric_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $metric;
+
+    /**
+     * @var TournamentTeam
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TournamentTeam", inversedBy="values")
+     * @ORM\JoinColumn(name="team_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $team;
+
+    /**
+     * @var TournamentTeamParticipant
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TournamentTeamParticipant", inversedBy="values")
+     * @ORM\JoinColumn(name="participant_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $participant;
 
     /**
      * @var float
@@ -123,6 +143,46 @@ class MetricValue
     public function sub($value)
     {
         $this->value -= $value;
+
+        return $this;
+    }
+
+    /**
+     * @return TournamentTeam
+     */
+    public function getTeam()
+    {
+        return $this->team;
+    }
+
+    /**
+     * @param TournamentTeam $team
+     *
+     * @return $this
+     */
+    public function setTeam($team)
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+    /**
+     * @return TournamentTeamParticipant
+     */
+    public function getParticipant()
+    {
+        return $this->participant;
+    }
+
+    /**
+     * @param TournamentTeamParticipant $participant
+     *
+     * @return $this
+     */
+    public function setParticipant($participant)
+    {
+        $this->participant = $participant;
 
         return $this;
     }
