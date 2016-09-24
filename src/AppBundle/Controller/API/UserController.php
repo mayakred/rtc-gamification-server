@@ -292,7 +292,7 @@ class UserController extends BaseAPIController implements ClassResourceInterface
                 'is_vtoroy_subview' => false, //sic(!) x2
                 'department' => $user->getDepartment(), //sic(!) x3
                 'winner_value' => $isPercent ? $winnerValue / $threshold : $winnerValue,
-                'team_value' => $isPercent ? $teamValueFloat / $threshold : $threshold,
+                'team_value' => $isPercent ? $teamValueFloat / $threshold : $teamValueFloat,
                 'user_id' => $user->getId(), //sic(!) x4
                 'threshold_value' => $threshold,
             ];
@@ -333,7 +333,7 @@ class UserController extends BaseAPIController implements ClassResourceInterface
                 'is_vtoroy_subview' => true, //sic(!) x2
                 'department' => $user->getDepartment(), //sic(!) x3
                 'winner_value' => $isPercent ? $winnerValue / $threshold : $winnerValue,
-                'team_value' => $isPercent ? $teamValueFloat / $threshold : $threshold,
+                'team_value' => $isPercent ? $teamValueFloat / $threshold : $teamValueFloat,
                 'user_id' => $user->getId(), //sic(!) x4
                 'threshold_value' => $threshold,
             ];
