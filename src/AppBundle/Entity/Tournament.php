@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\DBAL\Types\TournamentType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
@@ -206,5 +207,13 @@ class Tournament extends TimestampableEntity
     public function getTeams()
     {
         return $this->teams;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isIndividual()
+    {
+        return $this->type === TournamentType::INDIVIDUAL;
     }
 }

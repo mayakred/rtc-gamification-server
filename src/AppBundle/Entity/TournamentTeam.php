@@ -152,7 +152,7 @@ class TournamentTeam
      */
     public function addParticipant(TournamentTeamParticipant $participant)
     {
-        $participant->setTournament($this);
+        $participant->setTeam($this);
         $this->participants[] = $participant;
 
         return $this;
@@ -165,7 +165,7 @@ class TournamentTeam
      */
     public function removeParticipant(TournamentTeamParticipant $participant)
     {
-        $participant->setTournament(null);
+        $participant->setTeam(null);
         $this->participants->removeElement($participant);
 
         return $this;
