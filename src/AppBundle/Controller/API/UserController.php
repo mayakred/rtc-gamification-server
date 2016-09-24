@@ -286,13 +286,13 @@ class UserController extends BaseAPIController implements ClassResourceInterface
             $isPercent = $participantValue->getMetric()->getUnitType() === UnitType::PERCENT && $threshold !== null;
             $result[] = [
                 'id' => $participantValue->getId(),
-                'participant_value' => $isPercent ? $participantValue->getValue() / $threshold : $participantValue->getValue(),
+                'participant_value' => $isPercent ? $participantValue->getValue() / $threshold * 100 : $participantValue->getValue(),
                 'metric' => $participantValue->getMetric(),
                 'is_perviy_subview' => true, //sic(!)
                 'is_vtoroy_subview' => false, //sic(!) x2
                 'department' => $user->getDepartment(), //sic(!) x3
-                'winner_value' => $isPercent ? $winnerValue / $threshold : $winnerValue,
-                'team_value' => $isPercent ? $teamValueFloat / $threshold : $teamValueFloat,
+                'winner_value' => $isPercent ? $winnerValue / $threshold * 100 : $winnerValue,
+                'team_value' => $isPercent ? $teamValueFloat / $threshold * 100 : $teamValueFloat,
                 'user_id' => $user->getId(), //sic(!) x4
                 'threshold_value' => $threshold,
             ];
@@ -327,13 +327,13 @@ class UserController extends BaseAPIController implements ClassResourceInterface
             $isPercent = $participantValue->getMetric()->getUnitType() === UnitType::PERCENT && $threshold !== null;
             $result[] = [
                 'id' => $participantValue->getId(),
-                'participant_value' => $isPercent ? $participantValue->getValue() / $threshold : $participantValue->getValue(),
+                'participant_value' => $isPercent ? $participantValue->getValue() / $threshold * 100 : $participantValue->getValue(),
                 'metric' => $participantValue->getMetric(),
                 'is_perviy_subview' => false, //sic(!)
                 'is_vtoroy_subview' => true, //sic(!) x2
                 'department' => $user->getDepartment(), //sic(!) x3
-                'winner_value' => $isPercent ? $winnerValue / $threshold : $winnerValue,
-                'team_value' => $isPercent ? $teamValueFloat / $threshold : $teamValueFloat,
+                'winner_value' => $isPercent ? $winnerValue / $threshold * 100 : $winnerValue,
+                'team_value' => $isPercent ? $teamValueFloat / $threshold * 100 : $teamValueFloat,
                 'user_id' => $user->getId(), //sic(!) x4
                 'threshold_value' => $threshold,
             ];
