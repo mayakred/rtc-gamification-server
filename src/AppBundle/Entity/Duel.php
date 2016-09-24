@@ -9,21 +9,28 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Class Duel.
  *
  * @ORM\Entity()
  * @ORM\Table(name="app__duels")
+ *
+ * @JMS\ExclusionPolicy("all")
  */
 class Duel extends TemporaryTimestampableEntity
 {
+    const FULL_CARD = 'duel__full';
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({Duel::FULL_CARD})
      */
     protected $id;
 
@@ -32,6 +39,9 @@ class Duel extends TemporaryTimestampableEntity
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="victim_id", referencedColumnName="id", nullable=false)
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({Duel::FULL_CARD})
      */
     protected $victim;
 
@@ -40,6 +50,9 @@ class Duel extends TemporaryTimestampableEntity
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="initiator_id", referencedColumnName="id", nullable=false)
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({Duel::FULL_CARD})
      */
     protected $initiator;
 
@@ -47,6 +60,9 @@ class Duel extends TemporaryTimestampableEntity
      * @var float
      *
      * @ORM\Column(name="victim_value", type="float")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({Duel::FULL_CARD})
      */
     protected $victimValue;
 
@@ -54,6 +70,9 @@ class Duel extends TemporaryTimestampableEntity
      * @var float
      *
      * @ORM\Column(name="initiator_value", type="float")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({Duel::FULL_CARD})
      */
     protected $initiatorValue;
 
@@ -62,6 +81,9 @@ class Duel extends TemporaryTimestampableEntity
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Metric")
      * @ORM\JoinColumn(name="metric_id", referencedColumnName="id", nullable=false)
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({Duel::FULL_CARD})
      */
     protected $metric;
 
@@ -69,6 +91,9 @@ class Duel extends TemporaryTimestampableEntity
      * @var string
      *
      * @ORM\Column(name="status", type="DuelStatusType")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({Duel::FULL_CARD})
      */
     protected $status;
 
@@ -216,5 +241,31 @@ class Duel extends TemporaryTimestampableEntity
         $this->status = $status;
 
         return $this;
+    }
+
+    /**
+     * @return \DateTime
+     *
+     * @JMS\VirtualProperty()
+     * @JMS\SerializedName("start_at")
+     * @JMS\Type("Timestamp")
+     * @JMS\Groups({Duel::FULL_CARD})
+     */
+    public function getSince()
+    {
+        return parent::getSince();
+    }
+
+    /**
+     * @return \DateTime
+     *
+     * @JMS\VirtualProperty()
+     * @JMS\SerializedName("end_at")
+     * @JMS\Type("Timestamp")
+     * @JMS\Groups({Duel::FULL_CARD})
+     */
+    public function getUntil()
+    {
+        return parent::getUntil();
     }
 }

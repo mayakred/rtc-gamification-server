@@ -79,6 +79,10 @@ services:
         class: AppBundle\Manager\DeviceManager
         arguments: ['AppBundle\Entity\Device', '@doctrine']
 
+    app.manager.duel:
+        class: AppBundle\Manager\DuelManager
+        arguments: ['AppBundle\Entity\Duel', '@doctrine']
+
     app.manager.phone:
         class: AppBundle\Manager\PhoneManager
         arguments: ['AppBundle\Entity\Phone', '@doctrine']

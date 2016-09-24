@@ -10,6 +10,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Classes\Payload;
 use AppBundle\Controller\BaseAPIController;
+use AppBundle\Entity\Duel;
 use AppBundle\Entity\User;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
@@ -62,5 +63,15 @@ class UserController extends BaseAPIController implements ClassResourceInterface
         $this->get('app.handler.user')->addPlayerId($playerId, $this->getUser());
 
         return $this->response(Payload::create());
+    }
+
+    /**
+     * @Get("/users/{slug}/duels")
+     */
+    public function cgetDuelAction()
+    {
+        $duels = $this->get('app.manager.duel')->findAllRelatedToUser($this->getUser());
+
+        return $this->response(Payload::create($duels), [User::SHORT_CARD, Duel::FULL_CARD]);
     }
 }
