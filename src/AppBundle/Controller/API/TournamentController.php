@@ -45,11 +45,38 @@ class TournamentController extends BaseAPIController implements ClassResourceInt
     {
         $tournament = $this->get('app.manager.tournament')->findFullInfo($id);
 
-        return $this->response(Payload::create([$tournament]), [
+        return $this->response(Payload::create($tournament), [
             Tournament::PUBLIC_CARD,
             TournamentTeam::PUBLIC_CARD,
             TournamentTeamParticipant::PUBLIC_CARD,
             User::SHORT_CARD,
+        ]);
+    }
+
+    /**
+     * @FOSRest\Get("/tournaments/{id}/participants/{participantId}", requirements={
+     *     "id" = "\d+",
+     *     "participantId" = "\d+"
+     * })
+     *
+     * @param string $id
+     * @param string $participantId
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getParticipantInfoAction($id, $participantId)
+    {
+        $participant = $this->get('app.manager.tournament')->findParticipant($id, $participantId);
+        if ($participant === null) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->response(Payload::create($participant), [
+            TournamentTeamParticipant::INFO_CARD,
+            User::SHORT_CARD,
+            TournamentTeam::SHORT_CARD,
         ]);
     }
 

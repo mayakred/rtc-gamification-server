@@ -83,6 +83,34 @@ class TournamentManager extends BaseEntityManager
         ;
     }
 
+    /**
+     * @param int $id
+     * @param int $participantId
+     *
+     * @return TournamentTeamParticipant|null
+     */
+    public function findParticipant($id, $participantId)
+    {
+        return $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->select('participant')
+            ->from('AppBundle:TournamentTeamParticipant', 'participant')
+            ->join('participant.team', 'team')
+            ->join('team.tournament', 'tournament', 'WITH', 'tournament = :id')
+            ->andWhere('participant.id = :participant_id')
+            ->setParameter('id', $id)
+            ->setParameter('participant_id', $participantId)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return Tournament|null
+     */
     public function findFullInfo($id)
     {
         return $this
@@ -94,7 +122,7 @@ class TournamentManager extends BaseEntityManager
             ->where('t.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult()
         ;
     }
 

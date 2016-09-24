@@ -15,6 +15,7 @@ use JMS\Serializer\Annotation as JMS;
  */
 class TournamentTeam
 {
+    const SHORT_CARD  = 'tournament_team__short';
     const PUBLIC_CARD = 'tournament_team__public';
 
     /**
@@ -25,7 +26,7 @@ class TournamentTeam
      * @ORM\GeneratedValue(strategy="AUTO")
      *
      * @JMS\Expose()
-     * @JMS\Groups({TournamentTeam::PUBLIC_CARD})
+     * @JMS\Groups({TournamentTeam::PUBLIC_CARD, TournamentTeam::SHORT_CARD})
      */
     private $id;
 
@@ -36,7 +37,7 @@ class TournamentTeam
      * @ORM\JoinColumn(name="department_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      *
      * @JMS\Expose()
-     * @JMS\Groups({TournamentTeam::PUBLIC_CARD})
+     * @JMS\Groups({TournamentTeam::PUBLIC_CARD, TournamentTeam::SHORT_CARD})
      */
     private $department;
 

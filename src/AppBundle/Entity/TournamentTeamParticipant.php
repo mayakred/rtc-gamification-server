@@ -15,6 +15,7 @@ use JMS\Serializer\Annotation as JMS;
  */
 class TournamentTeamParticipant
 {
+    const INFO_CARD   = 'tournament_team_participant__info';
     const PUBLIC_CARD = 'tournament_team_participant__public';
 
     /**
@@ -25,7 +26,7 @@ class TournamentTeamParticipant
      * @ORM\GeneratedValue(strategy="AUTO")
      *
      * @JMS\Expose()
-     * @JMS\Groups({TournamentTeamParticipant::PUBLIC_CARD})
+     * @JMS\Groups({TournamentTeamParticipant::PUBLIC_CARD, TournamentTeamParticipant::INFO_CARD})
      */
     private $id;
 
@@ -34,6 +35,9 @@ class TournamentTeamParticipant
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TournamentTeam", inversedBy="participants")
      * @ORM\JoinColumn(name="team_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({TournamentTeamParticipant::PUBLIC_CARD, TournamentTeamParticipant::INFO_CARD})
      */
     private $team;
 
@@ -44,7 +48,7 @@ class TournamentTeamParticipant
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      *
      * @JMS\Expose()
-     * @JMS\Groups({TournamentTeamParticipant::PUBLIC_CARD})
+     * @JMS\Groups({TournamentTeamParticipant::PUBLIC_CARD, TournamentTeamParticipant::INFO_CARD})
      */
     private $user;
 
