@@ -17,6 +17,7 @@ doctrine:
             GenderType:     AppBundle\DBAL\Types\GenderType
             DepartmentType: AppBundle\DBAL\Types\DepartmentType
             json:           Sonata\Doctrine\Types\JsonType
+            UnitType:       AppBundle\DBAL\Types\UnitType
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
