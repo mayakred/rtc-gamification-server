@@ -9,6 +9,7 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\MeetingEvent;
 use AppBundle\Entity\Metric;
 use AppBundle\Entity\SaleEvent;
+use AppBundle\Entity\UnusualSolutionEvent;
 use AppBundle\Event\ExternalEvent;
 use AppBundle\Event\PushEvent;
 use AppBundle\Manager\EventManager;
@@ -68,7 +69,7 @@ class EventHandler
         /**
          * @var Metric[] $availableMetrics
          */
-        $availableMetrics = $this->metricManager->findAvailableForIndividualTournaments();
+        $availableMetrics = $this->metricManager->findNonePercentage();
         $eventMetrics = $this->convertEventToMetrics($event);
         $resultMetrics = [];
         foreach ($availableMetrics as $availableMetric) {
@@ -129,12 +130,15 @@ class EventHandler
             $metrics['metric_type.sales_in_rubles_percentage'] = $event->getTotal();
             $metrics['metric_type.sales_in_units'] = $event->getItems()->count();
             $metrics['metric_type.sales_in_units_percentage'] = $event->getItems()->count();
+            $metrics['metric_type.new_services_in_units'] = $event->getNewServicesAmount();
         } elseif ($event instanceof CallEvent) {
             if ($event->getCallType() === CallType::COLD) {
                 $metrics['metric_type.cold_calls_in_units'] = 1;
             } elseif ($event->getCallType() === CallType::HOT) {
                 $metrics['metric_type.warm_calls_in_units'] = 1;
             }
+        } elseif ($event instanceof UnusualSolutionEvent) {
+            $metrics['metric_type.solutions_in_units'] = 1;
         }
 
         return $metrics;

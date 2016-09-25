@@ -97,4 +97,20 @@ class SaleEvent extends Event
     {
         return $this->items;
     }
+
+    /**
+     * @return int
+     */
+    public function getNewServicesAmount()
+    {
+        $amount = 0;
+        /** @var SaleItem $item */
+        foreach ($this->items as $item) {
+            if ($item->isNew()) {
+                $amount++;
+            }
+        }
+
+        return $amount;
+    }
 }
