@@ -58,4 +58,18 @@ class DuelManager extends BaseEntityManager
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * @return Duel[]
+     */
+    public function findFinishedDuels()
+    {
+        $qb = $this->getRepository()->createQueryBuilder('duel')
+            ->where('duel.status = :in_progress')
+            ->andWhere('duel.until < :now')
+            ->setParameter('now', new \DateTime(null, new \DateTimeZone('UTC')))
+            ->setParameter('in_progress', DuelStatusType::IN_PROGRESS);
+
+        return $qb->getQuery()->getResult();
+    }
 }

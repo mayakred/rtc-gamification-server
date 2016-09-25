@@ -17,5 +17,6 @@ class PushType extends AbstractType
     const DUEL_REJECTED = 'push_type.duel_rejected';
     const DUEL_WON = 'push_type.duel_won';
     const DUEL_DEFEATED = 'push_type.duel_defeated';
+    const DUEL_DRAW = 'push_type.duel_draw';
     const EVENT_REACHED = 'push_type.event_reached';
 }
