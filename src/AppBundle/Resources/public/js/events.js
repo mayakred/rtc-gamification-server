@@ -24,6 +24,7 @@ function updateDataByType(data, type) {
       $('div.sale .row').each(function() {
          var $this = $(this);
          data.items.push({
+            'new':   $this.find('.sale-item-new').is(':checked'),
             cost:    $this.find('.sale-item-cost').val(),
             amount:  $this.find('.sale-item-amount').val(),
             service: $this.find('.sale-item-service').val()
@@ -45,6 +46,11 @@ function getSaleItemRow() {
       +     '<div class="form-group">'
       +       '<label for="service' + itemIdx + '">Service</label>'
       +       '<input type="text" class="form-control sale-item-service" id="service' + itemIdx + '" placeholder="Some service" required>'
+      +     '</div>'
+      +     '<div class="form-group checkbox">'
+      +        '<label>'
+      +           '<input type="checkbox" class="sale-item-new" id="result"> New service'
+      +        '</label>'
       +     '</div>'
       +     '<div class="form-group">'
       +       '<label for="amount' + itemIdx + '">Amount</label>'

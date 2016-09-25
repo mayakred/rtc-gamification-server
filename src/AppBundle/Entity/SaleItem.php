@@ -32,6 +32,13 @@ class SaleItem
     private $service;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="new", type="boolean", options={"default" = false})
+     */
+    private $new = false;
+
+    /**
      * @var int
      *
      * @Assert\NotBlank()
@@ -91,6 +98,26 @@ class SaleItem
     public function getService()
     {
         return $this->service;
+    }
+
+    /**
+     * @param bool $new
+     *
+     * @return SaleItem
+     */
+    public function setNew($new)
+    {
+        $this->new = $new;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNew()
+    {
+        return $this->new;
     }
 
     /**
