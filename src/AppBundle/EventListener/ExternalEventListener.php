@@ -33,8 +33,8 @@ class ExternalEventListener
     /**
      * ExternalEventListener constructor.
      *
-     * @param DuelHandler  $duelHandler
-     * @param EventHandler $eventHandler
+     * @param DuelHandler       $duelHandler
+     * @param EventHandler      $eventHandler
      * @param TournamentHandler $tournamentHandler
      */
     public function __construct(DuelHandler $duelHandler, EventHandler $eventHandler, TournamentHandler $tournamentHandler)
