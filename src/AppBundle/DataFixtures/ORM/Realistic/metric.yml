@@ -46,3 +46,45 @@ AppBundle\Entity\Metric:
         name: 'Количество встреч'
         unitType: 'unit_type.units'
         availableForIndividualTournaments: true
+
+    metric__internal:
+        code: 'metric_type.internal'
+        name: 'Внутренняя метрика'
+        unitType: 'unit_type.units'
+        availableForIndividualTournaments: false
+        availableForDuel: false
+        availableForTeamTournaments: false
+
+    metric__events_count:
+        code: 'metric_type.events_count'
+        name: 'Активность'
+        unitType: 'unit_type.units'
+        availableForIndividualTournaments: false
+        availableForDuel: false
+        availableForTeamTournaments: false
+
+    metric__new_services_count:
+        code: 'metric_type.new_services_in_units'
+        name: 'Новые услуги'
+        unitType: 'unit_type.units'
+        availableForIndividualTournaments: false
+        availableForDuel: false
+        availableForTeamTournaments: false
+
+    metric__solutions_in_units:
+        code: 'metric_type.solutions_in_units'
+        name: 'Нестандартные решения'
+        unitType: 'unit_type.units'
+        availableForIndividualTournaments: false
+        availableForDuel: false
+        availableForTeamTournaments: false
+
+    metric__duels_win_count:
+        code: 'metric_type.duels_win_in_units'
+        name: 'Побед в дуэлях'
+        unitType: 'unit_type.units'
+        availableForIndividualTournaments: false
+        availableForDuel: false
+        availableForTeamTournaments: false
+
+

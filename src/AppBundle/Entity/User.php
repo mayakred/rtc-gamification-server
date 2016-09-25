@@ -675,7 +675,7 @@ class User extends TimestampableEntity implements UserInterface, EquatableInterf
      */
     public function setUserAchievements($userAchievements)
     {
-        foreach($userAchievements as $userAchievement) {
+        foreach ($userAchievements as $userAchievement) {
             $this->addUserAchievement($userAchievement);
         }
 
