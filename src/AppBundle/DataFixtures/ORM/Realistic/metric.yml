@@ -81,7 +81,7 @@ AppBundle\Entity\Metric:
 
     metric__duels_win_count:
         code: 'metric_type.duels_win_in_units'
-        name: 'Побед в дуэлях'
+        name: 'Победы в дуэлях'
         unitType: 'unit_type.units'
         availableForIndividualTournaments: false
         availableForDuel: false

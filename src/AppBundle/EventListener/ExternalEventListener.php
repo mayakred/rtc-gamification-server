@@ -8,6 +8,7 @@
  */
 namespace AppBundle\EventListener;
 
+use AppBundle\Event\DuelEvent;
 use AppBundle\Event\ExternalEvent;
 use AppBundle\Handler\DuelHandler;
 use AppBundle\Handler\EventHandler;
@@ -49,5 +50,10 @@ class ExternalEventListener
         $this->duelHandler->handleExternalEvent($externalEvent->getEvent());
         $this->eventHandler->handleExternalEvent($externalEvent->getEvent());
         $this->tournamentHandler->handleExternalEvent($externalEvent->getEvent());
+    }
+
+    public function onDuelEvent(DuelEvent $duelEvent)
+    {
+        $this->eventHandler->handleDuelEvent($duelEvent);
     }
 }

@@ -3,6 +3,7 @@
 namespace AppBundle\Handler;
 
 use AppBundle\DBAL\Types\CallType;
+use AppBundle\DBAL\Types\DuelStatusType;
 use AppBundle\DBAL\Types\PushType;
 use AppBundle\Entity\CallEvent;
 use AppBundle\Entity\Event;
@@ -10,6 +11,8 @@ use AppBundle\Entity\MeetingEvent;
 use AppBundle\Entity\Metric;
 use AppBundle\Entity\SaleEvent;
 use AppBundle\Entity\UnusualSolutionEvent;
+use AppBundle\Event\DuelEvent;
+use AppBundle\Event\DuelWonEvent;
 use AppBundle\Event\ExternalEvent;
 use AppBundle\Event\PushEvent;
 use AppBundle\Manager\EventManager;
@@ -115,6 +118,44 @@ class EventHandler
         $em->flush();
     }
 
+    public function handleDuelEvent(DuelEvent $event)
+    {
+        $em = $this->eventManager->getEntityManager();
+
+        if ($event instanceof DuelWonEvent) {
+            $user = $event->getDuel()->getStatus() === DuelStatusType::VICTIM_WIN
+                ? $event->getDuel()->getVictim()
+                : $event->getDuel()->getInitiator();
+            $userAchievements = $user->getUserAchievements();
+            foreach ($userAchievements as $userAchievement) {
+                $achievement = $userAchievement->getAchievement();
+                $isReachedAlready = $achievement->isReached($userAchievement);
+                $oldValue = $userAchievement->getValue();
+                if ($achievement->getMetric()->getCode() !== 'metric_type.duels_win_in_units') {
+                    continue;
+                }
+                $userAchievement->addValue(1);
+
+                if (!$isReachedAlready && $oldValue < $userAchievement->getValue() && $achievement->isReached($userAchievement)) {
+                    $this->dispatcher->dispatch(
+                        PushEvent::NAME,
+                        new PushEvent(
+                            '',
+                            '',
+                            $user,
+                            PushType::EVENT_REACHED,
+                            null,
+                            $achievement
+                        )
+                    );
+                }
+
+                $em->persist($userAchievement);
+            }
+            $em->flush();
+        }
+    }
+
     /**
      * @param Event $event
      *
@@ -140,6 +181,7 @@ class EventHandler
         } elseif ($event instanceof UnusualSolutionEvent) {
             $metrics['metric_type.solutions_in_units'] = 1;
         }
+        $metrics['metric_type.events_count'] = 1;
 
         return $metrics;
     }

@@ -47,6 +47,7 @@ services:
         arguments: ['@app.handler.duel', '@app.handler.event', '@app.handler.tournament']
         tags:
             - { name: kernel.event_listener, event: 'app.event.external', method: 'onExternalEvent' }
+            - { name: kernel.event_listener, event: 'app.event.duel', method: 'onDuelEvent' }
 
     app.access_token_authenticator:
         class: AppBundle\Security\TokenAuthenticator

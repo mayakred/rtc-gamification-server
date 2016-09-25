@@ -12,6 +12,8 @@ use AppBundle\DBAL\Types\DuelStatusType;
 use AppBundle\DBAL\Types\PushType;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Metric;
+use AppBundle\Event\DuelEvent;
+use AppBundle\Event\DuelWonEvent;
 use AppBundle\Event\PushEvent;
 use AppBundle\Manager\DuelManager;
 use AppBundle\Manager\MetricManager;
@@ -106,6 +108,7 @@ class DuelHandler
     public function finishDuels()
     {
         $pushEvents = [];
+        $wonEvents = [];
         $winModifier = 10 * 1024 * 1024;
         $duels = $this->duelManager->findFinishedDuels();
         foreach ($duels as $duel) {
@@ -118,11 +121,13 @@ class DuelHandler
                 $duel->getVictim()->setRating($duel->getVictim()->getRating() + $winModifier);
                 $pushEvents[] = new PushEvent('', '', $duel->getVictim(), PushType::DUEL_WON, $duel);
                 $pushEvents[] = new PushEvent('', '', $duel->getInitiator(), PushType::DUEL_DEFEATED, $duel);
+                $wonEvents[] = new DuelWonEvent($duel);
             } elseif ($vValue < $iValue) {
                 $duel->setStatus(DuelStatusType::INITIATOR_WIN);
                 $duel->getInitiator()->setRating($duel->getInitiator()->getRating() + $winModifier);
                 $pushEvents[] = new PushEvent('', '', $duel->getInitiator(), PushType::DUEL_WON, $duel);
                 $pushEvents[] = new PushEvent('', '', $duel->getVictim(), PushType::DUEL_DEFEATED, $duel);
+                $wonEvents[] = new DuelWonEvent($duel);
             } else {
                 $duel->setStatus(DuelStatusType::DRAW);
                 $pushEvents[] = new PushEvent('', '', $duel->getVictim(), PushType::DUEL_DRAW, $duel);
@@ -134,6 +139,10 @@ class DuelHandler
         foreach ($pushEvents as $pushEvent) {
             $this->dispatcher->dispatch(PushEvent::NAME, $pushEvent);
         }
+        foreach ($wonEvents as $wonEvent) {
+            $this->dispatcher->dispatch(DuelEvent::NAME, $wonEvent);
+        }
+
         $this->userManager->recalcUserPosition();
     }
 }
