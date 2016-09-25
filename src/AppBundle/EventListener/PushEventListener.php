@@ -121,6 +121,7 @@ class PushEventListener
         curl_setopt($resource, CURLOPT_POST, true);
         curl_setopt($resource, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($resource, CURLOPT_VERBOSE, 0);
+        curl_setopt($resource, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($resource, CURLOPT_POSTFIELDS, $dataString);
         curl_exec($resource);
         curl_close($resource);
