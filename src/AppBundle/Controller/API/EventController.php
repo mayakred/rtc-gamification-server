@@ -9,6 +9,7 @@ use AppBundle\Entity\Event;
 use AppBundle\Form\Type\CallEventType;
 use AppBundle\Form\Type\MeetingEventType;
 use AppBundle\Form\Type\SaleEventType;
+use AppBundle\Form\Type\UnusualSolutionEventType;
 use FOS\RestBundle\Controller\Annotations as FOSRest;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,13 +21,14 @@ class EventController extends BaseAPIController implements ClassResourceInterfac
      * @var array
      */
     private static $forms = [
-        EventType::CALL    => CallEventType::class,
-        EventType::SALE    => SaleEventType::class,
-        EventType::MEETING => MeetingEventType::class,
+        EventType::CALL             => CallEventType::class,
+        EventType::SALE             => SaleEventType::class,
+        EventType::MEETING          => MeetingEventType::class,
+        EventType::UNUSUAL_SOLUTION => UnusualSolutionEventType::class,
     ];
 
     /**
-     * @FOSRest\Post("/events/{type}", requirements={"type" = "sale|meeting|call"})
+     * @FOSRest\Post("/events/{type}", requirements={"type" = "sale|meeting|call|unusual_solution"})
      *
      * @param Request $request
      * @param string  $type

@@ -14,9 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="type", type="EventType")
  * @ORM\DiscriminatorMap({
- *   "sale"    = "SaleEvent",
- *   "call"    = "CallEvent",
- *   "meeting" = "MeetingEvent",
+ *   "sale"             = "SaleEvent",
+ *   "call"             = "CallEvent",
+ *   "meeting"          = "MeetingEvent",
+ *   "unusual_solution" = "UnusualSolutionEvent",
  * })
  * @ORM\HasLifecycleCallbacks()
  */
