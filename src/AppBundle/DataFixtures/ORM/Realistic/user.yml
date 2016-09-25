@@ -1,5 +1,5 @@
 AppBundle\Entity\User:
-    user__{2..100}:
+    user__{2..50}:
         phones: ['@phone__<current()>']
         firstName: <firstName()>
         secondName: <lastName()>
@@ -134,43 +134,43 @@ AppBundle\Entity\UserAchievement:
         value: <numberBetween(0, 12)>
 
 
-    user_achievement_{2..100}_general:
+    user_achievement_{2..50}_general:
         achievement: '@achievement_general'
         value: <numberBetween(0, 50)>
 
-    user_achievement_{2..100}_champ:
+    user_achievement_{2..50}_champ:
         achievement: '@achievement_champ'
         value: <numberBetween(0, 1)>
 
-    user_achievement_{2..100}_crusader:
+    user_achievement_{2..50}_crusader:
         achievement: '@achievement_crusader'
         value: <numberBetween(0, 50)>
 
-    user_achievement_{2..100}_dart:
+    user_achievement_{2..50}_dart:
         achievement: '@achievement_dart'
         value: <numberBetween(0, 1)>
 
-    user_achievement_{2..100}_deadliner:
+    user_achievement_{2..50}_deadliner:
         achievement: '@achievement_deadliner'
         value: <numberBetween(0, 1)>
 
-    user_achievement_{2..100}_drummer:
+    user_achievement_{2..50}_drummer:
         achievement: '@achievement_drummer'
         value: <numberBetween(0, 60)>
 
-    user_achievement_{2..100}_grandmaster:
+    user_achievement_{2..50}_grandmaster:
         achievement: '@achievement_grandmaster'
         value: <numberBetween(0, 15)>
 
-    user_achievement_{2..100}_jedi:
+    user_achievement_{2..50}_jedi:
         achievement: '@achievement_jedi'
         value: <numberBetween(0, 20)>
 
-    user_achievement_{2..100}_musketeer:
+    user_achievement_{2..50}_musketeer:
         achievement: '@achievement_musketeer'
         value: <numberBetween(0, 10)>
 
-    user_achievement_{2..100}_solver:
+    user_achievement_{2..50}_solver:
         achievement: '@achievement_solver'
         value: <numberBetween(0, 12)>
 

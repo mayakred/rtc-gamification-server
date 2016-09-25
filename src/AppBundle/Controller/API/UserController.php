@@ -360,7 +360,7 @@ class UserController extends BaseAPIController implements ClassResourceInterface
             throw new NotFoundException();
         }
         $user = $this->getUser();
-        $isIndividualTournament = $request->query->get('is_perviy_subview', 'true') === 'true';
+        $isIndividualTournament = boolval($request->query->get('is_perviy_subview', true));
         $activeTournament = $this
             ->get('app.manager.tournament')
             ->findActiveByTypeAndUser($user, $isIndividualTournament ? TournamentType::INDIVIDUAL : TournamentType::TEAM);

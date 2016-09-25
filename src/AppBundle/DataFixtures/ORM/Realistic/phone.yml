@@ -1,5 +1,5 @@
 AppBundle\Entity\Phone:
     phone__1:
         phone: '+70000000000'
-    phone__{2..100}:
+    phone__{2..50}:
         phone (unique): <numerify('+7##########')>
