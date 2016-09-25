@@ -17,6 +17,7 @@ use AppBundle\DBAL\Types\UnitType;
 use AppBundle\Entity\Achievement;
 use AppBundle\Entity\Duel;
 use AppBundle\Entity\Metric;
+use AppBundle\Entity\Tournament;
 use AppBundle\Entity\User;
 use AppBundle\Entity\UserAchievement;
 use AppBundle\Event\PushEvent;
@@ -337,6 +338,51 @@ class UserController extends BaseAPIController implements ClassResourceInterface
                 'user_id' => $user->getId(), //sic(!) x4
                 'threshold_value' => $threshold,
             ];
+        }
+
+        return $this->response(Payload::create($result));
+    }
+
+    /**
+     * @param Request $request
+     * @param $code
+     *
+     * @Get("/{code}/statistic")
+     *
+     * @throws NotFoundException
+     *
+     * @return Response
+     */
+    public function getParticipantsByMetricAndTournamentAction(Request $request, $code)
+    {
+        $metric = $this->get('app.manager.metric')->findOneBy(['code' => $code]);
+        if (!$metric) {
+            throw new NotFoundException();
+        }
+        $user = $this->getUser();
+        $isIndividualTournament = $request->query->get('is_perviy_subview', 'true') === 'true';
+        $activeTournament = $this
+            ->get('app.manager.tournament')
+            ->findActiveByTypeAndUser($user, $isIndividualTournament ? TournamentType::INDIVIDUAL : TournamentType::TEAM);
+        $participants = $this
+            ->get('app.manager.tournament_team_participant')
+            ->findByTournament($activeTournament);
+        $result = [];
+        foreach ($participants as $participant) {
+            foreach ($participant->getValues() as $value) {
+                if ($value->getMetric()->getCode() === $code) {
+                    $result[] = [
+                        'id' => $participant->getId(),
+                        'metric' => $value->getMetric(),
+                        'metric_value' => $value->getValue(),
+                        'user_name' => $participant->getUser()->getFullName(),
+                        'is_perviy_subview' => $isIndividualTournament,
+                        'is_vtoroy_subview' => !$isIndividualTournament,
+                        'user_avatar' => $participant->getUser()->getAvatar(),
+                        'user_department' => $participant->getUser()->getDepartment(),
+                    ];
+                }
+            }
         }
 
         return $this->response(Payload::create($result));

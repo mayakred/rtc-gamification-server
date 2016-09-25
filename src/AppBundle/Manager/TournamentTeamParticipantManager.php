@@ -29,14 +29,50 @@ class TournamentTeamParticipantManager extends BaseEntityManager
             ->addSelect('team')
             ->addSelect('team_values')
             ->addSelect('participant_values')
+            ->addSelect('user')
+            ->addSelect('department')
+            ->addSelect('metric')
+            ->addSelect('image')
             ->join('participant.team', 'team')
             ->join('team.values', 'team_values')
             ->join('participant.values', 'participant_values')
+            ->join('participant_values.metric', 'metric')
+            ->join('participant.user', 'user')
+            ->join('user.department', 'department')
+            ->join('user.avatar', 'image')
             ->where('team.tournament = :tournament')
-            ->andWhere('participant.user = :user')
+            ->andWhere('user.id = :user_id')
             ->setParameter('tournament', $tournament)
-            ->setParameter('user', $user);
+            ->setParameter('user_id', $user->getId());
 
         return $qb->getQuery()->getSingleResult();
+    }
+
+    /**
+     * @param Tournament $tournament
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     *
+     * @return TournamentTeamParticipant[]
+     */
+    public function findByTournament(Tournament $tournament)
+    {
+        $qb = $this->getRepository()->createQueryBuilder('participant')
+            ->addSelect('participant_values')
+            ->addSelect('metric')
+            ->addSelect('user')
+            ->addSelect('image')
+            ->addSelect('department')
+            ->join('participant.team', 'team')
+            ->join('participant.user', 'user')
+            ->join('user.avatar', 'image')
+            ->join('user.department', 'department')
+            ->join('participant.values', 'participant_values')
+            ->join('participant_values.metric', 'metric')
+            ->where('team.tournament = :tournament')
+            ->setParameter('tournament', $tournament);
+
+        return $qb->getQuery()->getResult();
     }
 }
