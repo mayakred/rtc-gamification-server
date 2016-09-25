@@ -1,7 +1,13 @@
 {% extends '::base.html.twig' %}
 
+{% block stylesheets %}
+  {{ parent() }}
+  <link href="{{ asset('select2-4.0.3/dist/css/select2.min.css') }}" rel="stylesheet"></link>
+{% endblock %}
+
 {% block javascripts %}
   {{ parent() }}
+  <script src="{{ asset('select2-4.0.3/dist/js/select2.full.min.js') }}"></script>
   <script src="{{ asset('bundles/app/js/events.js') }}"></script>
 {% endblock %}
 

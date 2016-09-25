@@ -66,6 +66,7 @@ function getSaleItemRow() {
 }
 
 $(function() {
+   $('#users').select2();
    var $form = $('#add-event-form');
 
    $form.submit(function() {
