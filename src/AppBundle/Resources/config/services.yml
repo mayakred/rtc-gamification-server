@@ -69,7 +69,7 @@ services:
 
     app.handler.duel:
         class: AppBundle\Handler\DuelHandler
-        arguments: ['@app.manager.duel', '@app.manager.metric', '@app.handler.event']
+        arguments: ['@app.manager.duel', '@app.manager.metric', '@app.handler.event', '@event_dispatcher', '@app.manager.user']
 
     app.handler.user:
         class: AppBundle\Handler\UserHandler

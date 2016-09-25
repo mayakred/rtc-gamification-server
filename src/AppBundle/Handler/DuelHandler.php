@@ -8,10 +8,15 @@
  */
 namespace AppBundle\Handler;
 
+use AppBundle\DBAL\Types\DuelStatusType;
+use AppBundle\DBAL\Types\PushType;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Metric;
+use AppBundle\Event\PushEvent;
 use AppBundle\Manager\DuelManager;
 use AppBundle\Manager\MetricManager;
+use AppBundle\Manager\UserManager;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class DuelHandler
 {
@@ -31,17 +36,34 @@ class DuelHandler
     protected $eventHandler;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $dispatcher;
+
+    /**
+     * @var UserManager
+     */
+    protected $userManager;
+
+    /**
      * DuelHandler constructor.
      *
-     * @param DuelManager   $duelManager
-     * @param MetricManager $metricManager
-     * @param EventHandler  $eventHandler
+     * @param DuelManager              $duelManager
+     * @param MetricManager            $metricManager
+     * @param EventHandler             $eventHandler
+     * @param EventDispatcherInterface $dispatcher
+     * @param UserManager              $userManager
      */
-    public function __construct(DuelManager $duelManager, MetricManager $metricManager, EventHandler $eventHandler)
-    {
+    public function __construct(
+        DuelManager $duelManager, MetricManager $metricManager,
+        EventHandler $eventHandler, EventDispatcherInterface $dispatcher,
+        UserManager $userManager
+    ) {
         $this->duelManager = $duelManager;
         $this->metricManager = $metricManager;
         $this->eventHandler = $eventHandler;
+        $this->dispatcher = $dispatcher;
+        $this->userManager = $userManager;
     }
 
     /**
@@ -79,5 +101,39 @@ class DuelHandler
             $this->duelManager->save($duel, false);
         }
         $this->duelManager->getEntityManager()->flush();
+    }
+
+    public function finishDuels()
+    {
+        $pushEvents = [];
+        $winModifier = 10 * 1024 * 1024;
+        $duels = $this->duelManager->findFinishedDuels();
+        foreach ($duels as $duel) {
+            $winner = null;
+            $looser = null;
+            $vValue = $duel->getVictimValue();
+            $iValue = $duel->getInitiatorValue();
+            if ($vValue > $iValue) {
+                $duel->setStatus(DuelStatusType::VICTIM_WIN);
+                $duel->getVictim()->setRating($duel->getVictim()->getRating() + $winModifier);
+                $pushEvents[] = new PushEvent('', '', $duel->getVictim(), PushType::DUEL_WON, $duel);
+                $pushEvents[] = new PushEvent('', '', $duel->getInitiator(), PushType::DUEL_DEFEATED, $duel);
+            } elseif ($vValue < $iValue) {
+                $duel->setStatus(DuelStatusType::INITIATOR_WIN);
+                $duel->getInitiator()->setRating($duel->getInitiator()->getRating() + $winModifier);
+                $pushEvents[] = new PushEvent('', '', $duel->getInitiator(), PushType::DUEL_WON, $duel);
+                $pushEvents[] = new PushEvent('', '', $duel->getVictim(), PushType::DUEL_DEFEATED, $duel);
+            } else {
+                $duel->setStatus(DuelStatusType::DRAW);
+                $pushEvents[] = new PushEvent('', '', $duel->getVictim(), PushType::DUEL_DRAW, $duel);
+                $pushEvents[] = new PushEvent('', '', $duel->getInitiator(), PushType::DUEL_DRAW, $duel);
+            }
+        }
+        $this->duelManager->getEntityManager()->flush();
+
+        foreach ($pushEvents as $pushEvent) {
+            $this->dispatcher->dispatch(PushEvent::NAME, $pushEvent);
+        }
+        $this->userManager->recalcUserPosition();
     }
 }
