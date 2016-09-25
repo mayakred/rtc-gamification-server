@@ -120,6 +120,7 @@ class PushEventListener
         curl_setopt($resource, CURLOPT_URL, 'https://onesignal.com/api/v1/notifications');
         curl_setopt($resource, CURLOPT_POST, true);
         curl_setopt($resource, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($resource, CURLOPT_VERBOSE, 0);
         curl_setopt($resource, CURLOPT_POSTFIELDS, $dataString);
         curl_exec($resource);
         curl_close($resource);
