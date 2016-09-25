@@ -10,7 +10,20 @@ function log(text, data) {
    $('#log').append('<p>' + text + '</p>')
 }
 
-function updateDataByType(data, type) {
+function createSaleItemObject(isNew, cost, amount, service) {
+   return {
+      'new':   isNew,
+      cost:    cost,
+      amount:  amount,
+      service: service
+   };
+}
+
+function updateDataByType(type) {
+   var data = {
+      phone: $('#users').val()
+   };
+
    if (type === 'call') {
       data.type = $('#call-type').val();
    }
@@ -23,13 +36,50 @@ function updateDataByType(data, type) {
       data.items = [];
       $('div.sale .row').each(function() {
          var $this = $(this);
-         data.items.push({
-            'new':   $this.find('.sale-item-new').is(':checked'),
-            cost:    $this.find('.sale-item-cost').val(),
-            amount:  $this.find('.sale-item-amount').val(),
-            service: $this.find('.sale-item-service').val()
-         });
+         data.items.push(createSaleItemObject(
+            $this.find('.sale-item-new').is(':checked'),
+            $this.find('.sale-item-cost').val(),
+            $this.find('.sale-item-amount').val(),
+            $this.find('.sale-item-service').val()
+         ));
       });
+   }
+
+   return data;
+}
+
+function getPresetData(type) {
+   var data = {
+      phone: $('#users').val()
+   };
+
+   if (type === 'cold-call') {
+      data.type = 'cold';
+   }
+
+   if (type === 'hot-call') {
+      data.type = 'hot';
+   }
+
+   if (type === 'meeting') {
+      data.result = true;
+   }
+
+   if (type === 'sale') {
+      data.items = [];
+
+      data.items.push(createSaleItemObject(
+         true,
+         100,
+         2,
+         'Test service'
+      ));
+      data.items.push(createSaleItemObject(
+         false,
+         500,
+         3,
+         'Test service'
+      ));
    }
 
    return data;
@@ -65,31 +115,41 @@ function getSaleItemRow() {
    ;
 }
 
+function sendRequest(data, type) {
+   log('send request', data);
+   $.ajax({
+      type: 'POST',
+      url: '/api/v1/events/' + type,
+      data: JSON.stringify(data),
+      dataType: 'json',
+      success: function (data, status) {
+         log('success', data);
+      },
+      error: function(e) {
+         log('error', e);
+      }
+   });
+}
+
 $(function() {
    $('#users').select2();
    var $form = $('#add-event-form');
 
    $form.submit(function() {
       var type = $('#type').val();
-      var data = {
-         phone: $('#users').val()
-      };
+      var data = updateDataByType(type);
 
-      data = updateDataByType(data, type);
+      sendRequest(data, type);
 
-      log('send request', data);
-      $.ajax({
-         type: 'POST',
-         url: '/api/v1/events/' + type,
-         data: JSON.stringify(data),
-         dataType: 'json',
-         success: function (data, status) {
-            log('success', data);
-         },
-         error: function(e) {
-            log('error', e);
-         }
-      });
+      return false;
+   });
+
+   $('.add-simple-event').click(function () {
+      var $this = $(this);
+
+      var data = getPresetData($this.attr('data-type'));
+
+      sendRequest(data, $this.attr('data-event'));
 
       return false;
    });
