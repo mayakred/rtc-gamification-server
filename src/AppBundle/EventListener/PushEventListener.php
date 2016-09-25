@@ -91,6 +91,10 @@ class PushEventListener
                 $title = 'Получено достижение!';
                 $content = 'Вы получили достижение "' . $event->getAchievement()->getName() . '"!';
                 break;
+            case PushType::DUEL_DRAW:
+                $title = 'Ничья!';
+                $content = 'Дуэль окончена ничьей!';
+                break;
         }
 
         $data = [
