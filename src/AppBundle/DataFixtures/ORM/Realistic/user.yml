@@ -26,60 +26,70 @@ AppBundle\Entity\Achievement:
         name: 'Генерал продаж'
         image: "@image__achievement_general"
         metric: '@metric__sales_in_rubles'
+        description: 'Совершите 20 продаж для получения этого достижения'
         maxValue: 20
 
     achievement_champ:
         name: 'Чемпион месяца'
         image: '@image__achievement_champ'
         metric: '@metric__internal'
+        description: 'Победите в личном соревновании сентября 2016 года'
         maxValue: 1
 
     achievement_crusader:
         name: 'Крестоносец холодных звонков'
         image: '@image__achievement_crusader'
         metric: '@metric__cold_calls'
+        description: 'Для получения данного достижения необходимо совершить 20 холодных звонков'
         maxValue: 20
 
     achievement_dart:
         name: 'Дарт Вейдер компании'
         image: '@image__achievement_dart'
         metric: '@metric__internal'
+        description: 'Тайное достижение. Обратитесь к Канцлеру, чтобы узнать подробности'
         maxValue: 1
 
     achievement_deadliner:
         name: 'Специалист по дэдлайнам'
         image: '@image__achievement_deadliner'
         metric: '@metric__internal'
+        description: 'Для получения данного достижения необходимо всё успевать вовремя'
         maxValue: 1
 
     achievement_drummer:
         name: 'Ударник труда'
         image: '@image__achievement_drummer'
         metric: '@metric__events_count'
+        description: 'Совершите 50 полезных действий для получения этого достижения'
         maxValue: 50
 
     achievement_grandmaster:
         name: 'Гранд-мастер новых услуг'
         image: '@image__achievement_grandmaster'
         metric: '@metric__new_services_count'
+        description: 'Для получения данного достижения необходимо продать 10 новых услуг'
         maxValue: 10
 
     achievement_jedi:
         name: 'Джедай'
         image: '@image__achievement_jedi'
         metric: '@metric__duels_win_count'
+        description: 'Победите своих коллег в дуэлях 10 раз'
         maxValue: 10
 
     achievement_musketeer:
         name: 'Мушкетер'
         image: '@image__achievement_musketeer'
         metric: '@metric__duels_win_count'
+        description: 'Победите своих коллег в дуэлях 5 раз'
         maxValue: 5
 
     achievement_solver:
         name: 'Нестандартный решатель'
         image: '@image__achievement_solver'
         metric: '@metric__solutions_in_units'
+        description: 'Предложите 10 нестандартных решений проблем клиентов'
         maxValue: 10
 
 AppBundle\Entity\UserAchievement:

@@ -71,6 +71,16 @@ class Achievement
     private $metric;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string")
+     *
+     * @JMS\Expose()
+     * @JMS\Groups({Achievement::PUBLIC_CARD})
+     */
+    private $description;
+
+    /**
      * Get id.
      *
      * @return int
@@ -180,5 +190,25 @@ class Achievement
     public function isReached(UserAchievement $userAchievement)
     {
         return $userAchievement->getValue() >= $this->maxValue;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     *
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
     }
 }
