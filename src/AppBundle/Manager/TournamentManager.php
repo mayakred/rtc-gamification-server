@@ -198,6 +198,38 @@ class TournamentManager extends BaseEntityManager
 
             $tournament->addTeam($team);
         }
+
+        $this->generateRandomValuesForTournament($tournament);
+    }
+
+    private function generateRandomValuesForTournament(Tournament $tournament)
+    {
+        foreach ($tournament->getTeams() as $team) {
+            foreach($team->getValues() as $teamValue) {
+                $restValue = random_int(0, 10000);
+                $teamValue->setValue($restValue);
+                $participants = $team->getParticipants();
+                for ($i = 0; $i < count($participants) - 1; $i++) {
+                    $participant = $participants[$i];
+                    $value = random_int(0, $restValue);
+                    $restValue -= $value;
+                    foreach($participant->getValues() as $participantValue) {
+                        if ($participantValue->getMetric()->getCode() !== $teamValue->getMetric()->getCode()) {
+                            continue;
+                        }
+                        $participantValue->setValue($value);
+                        break;
+                    }
+                }
+                foreach($participants[count($participants) - 1]->getValues() as $participantValue) {
+                    if ($participantValue->getMetric()->getCode() !== $teamValue->getMetric()->getCode()) {
+                        continue;
+                    }
+                    $participantValue->setValue($restValue);
+                    break;
+                }
+            }
+        }
     }
 
     /**
